@@ -1,0 +1,93 @@
+SOURCE #1
+<br>
+Article
+<br>
+Data analysis aims to determine whether a model—used to understand or predict phenomena—accurately reflects real-world data. Models can be simple or complex, ranging from summarizing data to predicting particle behavior. The goal is to evaluate how well a model fits the data and refine its parameters for improved accuracy. For instance, in radioactive decay studies, a model might predict the substance's half-life, but real experiments often require adjustments due to measurement precision and variability.
+Experiments provide data to update the model, starting with a prior representing initial assumptions and adjusting it with new data to obtain a posterior. Probabilities are essential for describing different outcomes, such as calculating the probability of a substance decaying within a specific time frame. Bayes' Theorem guides this iterative refinement, incorporating methods like Markov Chains for parameter estimation and model comparison. This process improves our predictions and understanding of various scenarios.
+Parameter estimation involves determining optimal values for model variables using collected data, which involves calculating a normalized probability density for different parameter values. The function P(x=D∣λ,ν,M) represents the probability of observing the data given the model and parameters. Accurate results rely on defining this function and prior probabilities, which reflect initial beliefs. Bayesian methods can handle complex scenarios beyond fixed priors, and the posterior probability density function (pdf) allows for detailed analysis of parameters, including their mean, median, mode, and root-mean-square values. It also helps assess parameter correlations and uncertainties, enhancing model performance and reliability.
+Model validity and comparison can be challenging within a Bayesian framework due to the complexity of defining all possible models and the impact of initial assumptions. Methods such as Akaike, Hannan–Quinn, Schwarz information criteria, Bayes factors, and chi-square tests are used to assess model fit. However, these methods have limitations and are influenced by parameter range selection, with newer techniques expected to address these challenges.
+Setting parameter limits typically involves integrating the posterior pdf to determine ranges within confidence levels, such as finding a 90% upper limit. If prior distribution uncertainty is significant, alternative methods, like comparing the likelihood of data given the model to a standard model, can be used. A low likelihood ratio suggests less likely parameter values, though it does not completely rule them out.
+Markov Chain Monte Carlo (MCMC) estimates the likelihood of outcomes by generating a sequence of random values dependent on previous ones. The Metropolis algorithm, a popular MCMC method, starts with an initial guess, proposes new guesses, and decides whether to accept them based on their likelihood. This iterative process provides accurate outcome probabilities, even for complex models.
+<br>
+<br>
+SOURCE #2
+<br>
+Website
+<br>
+https://towardsdatascience.com/introduction-to-bayesian-linear-regression-e66e60791ea7
+<br>
+When trying to understand or predict how different factors affect each other, like how exercise impacts calorie burn, we can use two main methods: Frequentist and Bayesian Linear Regression. The Frequentist approach gives us a single best estimate based on the data we collect. For instance, if we gather data on how long people exercise and how many calories they burn, Frequentist Linear Regression helps us create a formula, like saying every extra minute of exercise burns about 7.17 more calories. This method finds the best-fitting line that minimizes prediction errors and provides a single estimate for new data points.
+On the other hand, Bayesian Linear Regression offers a different perspective. Instead of just one number, it provides a range of possible values, reflecting the uncertainty in our predictions. This approach combines the data with any prior information we might have, such as initial guesses or assumptions about calorie burn. For example, if we predict the calories burned for 15.5 minutes of exercise using Bayesian methods, we get a range of values that show where most of the possible answers might fall, rather than a single number.
+In summary, Frequentist methods give us a precise estimate from our data, while Bayesian methods show us a range of possible outcomes and include prior knowledge. By using both approaches, we can make better predictions and gain a deeper understanding of our data.
+<br>
+<br>
+Source #3
+<br>
+Website
+<br>
+https://www.ibm.com/topics/linear-regression#:~:text=IBM-,What%20is%20linear%20regression%3F,is%20called%20the%20independent%20variable.
+<br>
+What is Linear Regression?
+<br>
+Linear regression is a method used to predict the value of one thing based on the value of another thing. Imagine you want to guess a student’s test score based on how many hours they studied. In this case, the test score is what you want to predict (called the dependent variable), and the study hours are what you use to make the prediction (called the independent variable).
+<br>
+How Does It Work?
+<br>
+Linear regression fits a straight line through the data points on a graph. This line is chosen so that the difference between the line’s predictions and the actual data points is as small as possible. The goal is to find the best line that represents the relationship between the two variables.
+<br>
+Why is it Useful?
+<br>
+Linear regression is simple to understand and can be done using programs like Excel, R, or Python. It helps us make predictions and understand relationships between variables. For example, businesses use linear regression to predict sales based on past data, or to see how changes in prices might affect customer buying habits.
+<br>
+Key Points to Check:
+<br>1.	Continuous Data: Make sure your data is numerical and not categorical (like yes/no).
+<br>2.	Linear Relationship: The relationship between the variables should be roughly a straight line.
+<br>3.	Independence: The data points should be independent of each other.
+<br>4.	No Outliers: There shouldn’t be any unusual data points that don’t fit the general trend.
+<br>5.	Consistent Spread: The spread of the data around the line should be consistent.
+<br>
+Examples of Use:
+<br>•	Sales Predictions: Estimate a salesperson’s yearly sales based on their age, education, and experience.
+<br>•	Price Changes: Analyze how changing the price of a product affects its sales.
+<br>•	Risk Assessment: Help insurance companies predict the cost of claims based on different factors.
+<br>•	Sports Analysis: Determine how a basketball team’s average points per game might relate to the number of games they win.
+<br>
+Linear regression is a powerful tool for making predictions and finding patterns in data, and it’s used in many areas from business to sports.
+<br>
+<br>
+SOURCE #4
+<br>
+Gabry, J., Simpson, D., Vehtari, A., Betancourt, M., & Gelman, A. (2019). Visualization in Bayesian Workflow. Journal of the Royal Statistical Society Series A: Statistics in Society, 182(2), 389–402. https://doi.org/10.1111/rssa.12378
+<br>
+In Bayesian analysis, constructing a network of models is just the beginning. The next critical step is fitting these models effectively, where advanced diagnostic techniques and visualizations play a crucial role. Traditional MCMC diagnostics, such as trace plots and autocorrelation functions, offer basic insights but may fall short in complex scenarios where chains mix well. For Hamiltonian Monte Carlo (HMC) methods, visual diagnostics provide deeper insights. Specifically, examining the smoothness of the posterior’s geometry and detecting divergent trajectories—where the leapfrog integrator strays from the expected path—are essential. Visualization tools, such as bivariate scatter plots and parallel coordinate plots, are particularly useful for identifying and addressing issues with HMC sampling.
+Posterior predictive checks are vital for assessing model fit. By generating data from the posterior predictive distribution and comparing it with observed data, one can evaluate how well the model represents real-world data. These checks often involve qualitative assessments and may include comparisons of replicated data features and calibration checks. Hierarchical models typically perform better in simulating data that resembles observed values compared to simpler models. Techniques like leave-one-out (LOO) cross-validation further refine model accuracy by evaluating how well the model predicts left-out data points.
+<br>
+Additionally, visualization helps in identifying unusual data points, such as outliers and high-leverage observations, which can significantly impact model performance. Tools like one-dimensional cross-validated LOO predictive distributions and PSIS LOO diagnostics help pinpoint these influential points, guiding model refinement.
+<br>
+Overall, visualization is a powerful tool in Bayesian data analysis, enhancing the understanding and evaluation of models. By integrating visual diagnostics with traditional quantitative methods, statisticians can more effectively assess model performance, improve accuracy, and ensure robust model fitting and evaluation.
+<br>
+<br>
+SOURCE #5
+<br>
+Zyphur, M. J., & Oswald, F. L. (2015). Bayesian Estimation and Inference: A User’s Guide. Journal of Management, 41(2), 390–420. https://doi.org/10.1177/0149206313501200
+<br>
+The article contrasts Bayesian and frequentist methods of data analysis, highlighting their strengths and limitations. Frequentist methods, such as null hypothesis significance testing (NHST), are widely used but face challenges, particularly with small sample sizes and a lack of integration of prior knowledge. For instance, a study by Zyphur et al. (2007) examined ego depletion, where frequentist methods found some significant effects but struggled to incorporate past research and showed limitations in small samples.
+<br>
+In contrast, Bayesian methods use prior knowledge from previous studies to improve predictions and provide more reliable results. When the same ego depletion study was re-analyzed using Bayesian techniques, it revealed stronger support for the research hypotheses and offered clearer, more accurate estimates. This approach benefits from combining existing knowledge with current data, making it particularly useful for overcoming the frequentist methods' shortcomings.
+<br>
+The article advocates for Bayesian methods in organizational research, suggesting that they could enhance the analysis by integrating past findings and improving data interpretation. Although not a perfect solution, Bayesian analysis offers significant advantages and should be considered as a valuable tool for future research.
+<br>
+<br>
+SOURCE #6
+<br>
+van de Schoot, R., Depaoli, S., King, R., Kramer, B., Märtens, K., Tadesse, M. G., Vannucci, M., Gelman, A., Veen, D., Willemsen, J., & Yau, C. (2021). Bayesian statistics and modelling. Nature Reviews Methods Primers, 1(1). https://doi.org/10.1038/s43586-020-00001-2
+<br>
+Bayesian statistics is a powerful and flexible approach to understanding and analyzing data. It works by using probabilities to represent uncertainty and update our knowledge as we gather new information. This method is particularly useful in many fields, including genetics, where it helps researchers identify links between genetic variants and diseases. By using Bayesian techniques, scientists can better integrate different types of data, such as genetic information, medical imaging, and lifestyle factors, to understand complex health issues.
+<br>
+One of the key advantages of Bayesian statistics is its ability to incorporate prior knowledge into the analysis. For example, in genetics, Bayesian methods can help pinpoint which genetic variations might be causing diseases by using previous research and data. This approach also helps with "fine-mapping," which is the process of narrowing down the exact location of genetic variants associated with traits or diseases.
+<br>
+In recent years, the rise of deep learning and advanced computing has greatly influenced Bayesian statistics. Deep learning involves using complex neural networks to analyze large and intricate data sets. Techniques like variational autoencoders blend Bayesian principles with deep learning, allowing researchers to handle high-dimensional data and make accurate predictions. These methods are particularly useful for analyzing single-cell data in genomics, where researchers look at individual cells to understand cellular diversity and function.
+<br>
+Despite these advances, there are still challenges in Bayesian statistics. One issue is figuring out how to set prior distributions effectively, especially when using deep learning models. Researchers are also exploring how Bayesian methods can be integrated with new AI technologies to improve data analysis and prediction.
+<br>
+Overall, Bayesian statistics has become a key tool in modern research, helping scientists make better sense of complex data and drive new discoveries. As technology and methods continue to evolve, Bayesian approaches are expected to remain at the forefront of scientific innovation, bridging the gap between traditional statistical techniques and cutting-edge AI developments.
