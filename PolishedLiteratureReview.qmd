@@ -1,0 +1,100 @@
+---
+title: "Literature Review of Bayesian Linear Regression"
+author: "Heather Anderson"
+format:
+  html:
+    link-external-icon: true
+    link-external-newwindow: true
+course: Capstone Projects in Data Science
+bibliography: references.bib
+self-contained: true
+execute: 
+  warning: false
+  message: false
+editor: 
+  markdown: 
+    wrap: 72
+theme: cyborg
+---
+
+Bayesian linear regression (BLR) is a statistical approach that uses
+Bayesian principles to model relationships between variables. It
+combines prior knowledge with data to make predictions and handle
+uncertainty in the estimates. Unlike traditional Frequentist methods,
+BLR provides a probability-based approach for both estimating values and
+making forecasts.
+
+Linear regression itself is a key technique for predicting one variable
+based on another by finding the best-fitting line that minimizes the gap
+between what we predict and what actually happens (IBM, 2024). This
+method is used in both Frequentist and Bayesian approaches and forms the
+groundwork for more advanced analysis.
+
+In Bayesian linear regression, Bayes' Theorem is used to update prior
+beliefs about model parameters with new data, resulting in a posterior
+distribution that reflects a range of possible values rather than a
+single estimate (Bayes, 1763). This method takes into account previous
+knowledge and measures the uncertainty in predictions, giving a richer
+and often more useful picture compared to the single-point estimates
+from Frequentist approaches (Towards Data Science, 2021).
+
+The Bayesian Analysis Toolkit (BAT) provides a real-world application of
+Bayesian methods, utilizing Markov Chain Monte Carlo (MCMC) techniques
+for posterior sampling and model comparison. BAT allows for flexible
+modeling and easy numerical integration, showing how Bayesian techniques
+can be applied in practical situations (Caldwell, Kollár, & Kröninger,
+2009).
+
+Visualization plays a critical role in Bayesian workflows, as
+highlighted by Gabry et al. (2019). Tools such as trace plots and
+Hamiltonian Monte Carlo (HMC) diagnostics are crucial for figuring out
+if a model is working well and identifying any issues. In addition,
+techniques like posterior predictive checks and leave-one-out (LOO)
+cross-validation help fine-tune the model by testing how well it
+predicts new data.
+
+Zyphur and Oswald (2015) compare Bayesian and Frequentist methods,
+showing that Bayesian techniques often offer more dependable results.
+They do this by incorporating prior knowledge and overcoming some of the
+challenges that Frequentist methods face, especially with small sample
+sizes. Their study highlights how Bayesian methods can enhance
+predictions and help in better understanding the data.
+
+Van de Schoot et al. (2021) explore how Bayesian statistics are becoming
+increasingly relevant and adaptable in today’s research. They point out
+that, with the help of modern deep learning and powerful computers,
+Bayesian methods are significantly improving the analysis of complex
+data. For instance, techniques like variational autoencoders, which
+combine Bayesian ideas with deep learning, are great for managing
+high-dimensional data and making precise predictions. This blend of
+Bayesian methods with advanced technology shows how Bayesian analysis is
+evolving to tackle modern challenges and boost scientific progress.
+
+Gelman et al. (2013) offer a detailed look at Bayesian methods,
+including how they apply to linear regression. They highlight the
+advantages of using Bayesian approaches to handle uncertainty and
+improve models by incorporating prior information, which in turn boosts
+predictive accuracy and overall model performance.
+
+Recent progress in variational inference, as highlighted by Blei,
+Kucukelbir, and McAuliffe (2017), offers scalable alternatives to MCMC
+methods. Variational inference works by approximating posterior
+distributions through optimization, making it a more efficient choice
+for handling large datasets and complex models.
+
+Carpenter et al. (2017) focus on how Bayesian methods are used in
+hierarchical models, particularly for complex systems. They point out
+that Bayesian hierarchical modeling is especially useful for handling
+data with multiple levels and capturing detailed relationships between
+variables, which improves both the flexibility and the accuracy of
+models in practical situations.
+
+In conclusion, Bayesian linear regression is a powerful tool for
+modeling and predicting how variables are related. It stands out because
+it blends prior knowledge with a way to handle uncertainty. With the
+help of advanced diagnostics, practical tools like BAT, and recent
+breakthroughs in computing and deep learning, Bayesian methods show just
+how flexible and effective they can be for analyzing complex data in
+today’s world.
+
+## 
