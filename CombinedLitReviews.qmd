@@ -1,0 +1,73 @@
+---
+title: "Combined Literature Review"
+format:
+  html:
+    link-external-icon: true
+    link-external-newwindow: true
+course: Capstone Projects in Data Science
+bibliography: references.bib
+self-contained: true
+execute: 
+  warning: false
+  message: false
+editor: 
+  markdown: 
+    wrap: 72
+theme: superhero
+---
+
+This literature review examines Bayesian linear regression (BLR), a
+statistical method that uses Bayesian principles to model relationships
+between variables. BLR combines prior knowledge with data to make
+predictions and manage uncertainty, offering a different approach
+compared to traditional Frequentist methods.\
+\
+Linear regression is a key technique used to predict one variable based
+on another by finding the best-fitting line to minimize prediction
+errors (“What Is Linear Regression?” 2021). This method is essential in
+both Frequentist and Bayesian analyses.\
+\
+In Bayesian linear regression, Bayes’ theorem updates our beliefs about
+model parameters as new data becomes available, leading to a posterior
+distribution that reflects a range of possible values instead of just a
+single estimate (Bayes 1991). This approach incorporates prior knowledge
+and quantifies uncertainty, providing a richer picture than the point
+estimates typical in Frequentist statistics (Koehrsen 2018).\
+\
+The Bayesian Analysis Toolkit (BAT) exemplifies practical applications
+of Bayesian methods, using Markov Chain Monte Carlo (MCMC) techniques
+for sampling and model comparison. BAT allows for flexible modeling and
+efficient numerical integration (Caldwell, Kollár, and Kröninger 2009).
+Visualization tools, such as trace plots and Hamiltonian Monte Carlo
+(HMC) diagnostics, are crucial for assessing model performance and
+identifying issues (Gabry et al. 2019). Additional techniques like
+posterior predictive checks and leave-one-out (LOO) cross-validation
+help improve model accuracy.\
+\
+Research by Zyphur and Oswald (2015) shows that Bayesian methods often
+yield more reliable results, especially with small sample sizes, by
+incorporating prior knowledge. Van de Schoot et al. (2021) note that
+advancements in computing and deep learning have made Bayesian
+statistics more relevant, with methods like variational autoencoders
+effectively handling complex data.\
+\
+Gelman et al. (2013) discuss the advantages of Bayesian approaches in
+linear regression, emphasizing how they manage uncertainty and enhance
+predictive accuracy through prior information. Recent developments in
+variational inference, as noted by Blei, Kucukelbir, and McAuliffe
+(2017), provide efficient alternatives to traditional MCMC methods by
+optimizing posterior approximations.\
+\
+Carpenter et al. (2017) highlight the usefulness of Bayesian
+hierarchical models, which effectively manage data with multiple levels
+and capture complex relationships between variables.\
+\
+In conclusion, this review underscores the strengths of Bayesian linear
+regression. By blending prior knowledge with uncertainty management, BLR
+provides a flexible and effective framework for analyzing complex data.
+With tools like BAT and recent advancements in technology, Bayesian
+methods are well-suited for a variety of applications. Future research
+should further explore MCMC methods and the foundational principles of
+Bayesian linear regression.
+
+## 
