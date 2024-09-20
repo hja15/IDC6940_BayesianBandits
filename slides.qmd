@@ -1,21 +1,26 @@
 ---
-title: "Present a great story for data science projects"
-subtitle: "This is a Slide Template"
-author: "Students names (Advisor: Dr. Cohen)"
-date: '`r Sys.Date()`'
-format:
-  revealjs
-course: Capstone Projects in Data Science
-bibliography: references.bib # file contains bibtex for references
-#always_allow_html: true # this allows to get PDF with HTML features
-self-contained: true
-execute: 
+title: "Bayesian Linear Regression"
+subtitle: "Heather Anderson & Sara Parrish"
+author: "Bayesian Bandits"
+execute:
+  echo: true
   warning: false
   message: false
-editor: 
-  markdown: 
-    wrap: 72
+  error: false
+format: 
+  revealjs:
+    theme: dark
+    embed-resources: true
+    slide-number: false
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+editor: source
+pdf-separate-fragments: true
+fig-align: center
 ---
+
 
 ::: callout-important
 **Remember:** Your goal is to make your audience understand and care
@@ -45,6 +50,47 @@ In kernel estimator, weight function is known as kernel function
 [@efr2008]. Cite this paper [@bro2014principal]. The GEE [@wang2014].
 The PCA [@daffertshofer2004pca]\*
 
+## Literature Review: Introduction to Bayesian Linear Regression
+
+-   BLR definition and its significance in statistical modeling
+
+-   Bayesian methods vs. Frequentist approaches
+
+-   Role of prior knowledge in shaping predictions
+
+## Literature Review: Understanding the Bayesian Framework
+
+-   Explanation of Bayes’ theorem and its application in updating beliefs
+
+-   Posterior distribution vs. point estimates
+
+-   How this leads to better uncertainty quantification
+
+## Literature Review: Tools and Techniques in Bayesian Analysis
+
+-   Introduction to the Bayesian Analysis Toolkit (BAT) and its features
+
+-   Markov Chain Monte Carlo (MCMC) for sampling and model comparison
+
+-   Visualization tools (trace plots, HMC diagnostics) for model assessment
+
+## Literature Review: Advantages of Bayesian Methods
+
+-   Findings from Zyphur and Oswald on reliability with small samples
+
+-   Advancements in computing and their impact on Bayesian relevance
+
+-   Efficiency of variational inference as an alternative to MCMC
+
+## Literature Review: Conclusion and Future Directions
+
+-   Key strengths of BLR: flexibility, uncertainty management
+
+-   Encouragement of exploration of MCMC and foundational Bayesian principles
+
+-   Potential for future applications in complex data analysis
+
+
 ## Methods
 
 -   Detail the models or algorithms used.
@@ -69,7 +115,6 @@ A study was conducted to determine how...
 # loading packages 
 library(tidyverse)
 library(knitr)
-library(ggthemes)
 library(ggrepel)
 library(dslabs)
 ```
