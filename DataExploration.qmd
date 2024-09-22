@@ -1,0 +1,107 @@
+---
+title: "Data Exploration"
+author: "Heather Anderson"
+format:
+  html:
+    link-external-icon: true
+    link-external-newwindow: true
+course: Capstone Projects in Data Science
+self-contained: true
+execute: 
+  warning: false
+  message: false
+editor: 
+  markdown: 
+    wrap: 72
+theme: cyborg
+---
+
+## Dataset 1
+
+<https://www.kaggle.com/datasets/sriharshaeedala/airline-delay?resource=download>
+
+```{r}
+AirlineDelays <- read.csv("Airline_Delay_Cause.csv")
+head(AirlineDelays)
+```
+
+```{r}
+dim(AirlineDelays)
+```
+
+This dataset provides information on flight arrivals and delays at U.S.
+airports, sorted by airline carriers. It includes details like the
+number of arriving flights, delays over 15 minutes, cancellations, and
+diversions. It also shows the reasons for delays, such as airline
+issues, weather, airspace factors, security, and late arrivals. You can
+use this dataset to analyze how different airlines perform at various
+airports and understand what causes delays in the aviation industry.
+
+Variables:
+
+-   year: The year of the data.
+
+-   month: The month of the data.
+
+-   carrier: Carrier code.
+
+-   carrier_name: Carrier name.
+
+-   airport: Airport code.
+
+-   airport_name: Airport name.
+
+-   arr_flights: Number of arriving flights.
+
+-   arr_del15: Number of flights delayed by 15 minutes or more.
+
+-   carrier_ct: Carrier count (delay due to the carrier).
+
+-   weather_ct: Weather count (delay due to weather).
+
+-   nas_ct: NAS (National Airspace System) count (delay due to the NAS).
+
+-   security_ct: Security count (delay due to security).
+
+-   late_aircraft_ct: Late aircraft count (delay due to late aircraft
+    arrival).
+
+-   arr_cancelled: Number of flights canceled.
+
+-   arr_diverted: Number of flights diverted.
+
+-   arr_delay: Total arrival delay.
+
+-   carrier_delay: Delay attributed to the carrier.
+
+-   weather_delay: Delay attributed to weather.
+
+-   nas_delay: Delay attributed to the NAS.
+
+-   security_delay: Delay attributed to security.
+
+-   late_aircraft_delay: Delay attributed to late aircraft arrival.
+
+```{r}
+tail(AirlineDelays)
+```
+
+## Dataset 2
+
+<https://github.com/YBI-Foundation/Dataset/blob/main/Airline%20Delay.csv>
+
+```{r}
+AirDelays <- read.csv("Airline Delay.csv")
+head(AirDelays)
+```
+
+```{r}
+dim(AirDelays)
+```
+
+```{r}
+tail(AirDelays)
+```
+
+All of the data from Dataset 2 appear to be from December 2019 and
+December 2020.
