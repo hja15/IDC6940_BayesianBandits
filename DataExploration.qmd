@@ -103,5 +103,43 @@ dim(AirDelays)
 tail(AirDelays)
 ```
 
-All of the data from Dataset 2 appear to be from December 2019 and
-December 2020.
+This dataset contains detailed information about flight arrivals and
+delays for U.S. airports, specifically for the months of December 2019
+and December 2020. Here are the key components of the dataset:
+
+-   **Dimensions:** The dataset consists of 3,351 rows and 21 columns,
+    capturing data for multiple airlines and airports.
+
+-   **Columns:**
+
+    -   **year, month:** The year and month of the recorded flights.
+
+    -   **carrier, carrier_name:** The airline's code and full name.
+
+    -   **airport, airport_name:** The airport code and full name.
+
+    -   **arr_flights:** The total number of arriving flights.
+
+    -   **arr_del15:** The number of flights delayed by over 15 minutes.
+
+    -   **carrier_ct, weather_ct, nas_ct, security_ct,
+        late_aircraft_ct:** Counts of delays attributed to various
+        causes.
+
+    -   **arr_cancelled:** Number of canceled flights.
+
+    -   **arr_diverted:** Number of diverted flights.
+
+    -   **arr_delay:** Total delay time in minutes.
+
+    -   **carrier_delay, weather_delay, nas_delay, security_delay,
+        late_aircraft_delay:** Breakdown of delays by specific causes.
+
+-   **Insights:**
+
+    -   The dataset allows for analysis of flight performance by
+        different carriers across various airports.
+
+    -   It can be used to identify trends in delays, cancellations, and
+        the reasons behind them, providing insights into factors
+        affecting the aviation industry during these months.
