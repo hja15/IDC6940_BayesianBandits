@@ -21,6 +21,11 @@ theme: cyborg
 <https://www.kaggle.com/datasets/sriharshaeedala/airline-delay?resource=download>
 
 ```{r}
+library(dplyr)
+library(knitr)
+```
+
+```{r}
 AirlineDelays <- read.csv("Airline_Delay_Cause.csv")
 head(AirlineDelays)
 ```
@@ -85,6 +90,273 @@ airports and understand what causes delays in the aviation industry.
 
 ```{r}
 tail(AirlineDelays)
+```
+
+```{r}
+min_delay_value <- min(AirlineDelays$arr_delay, na.rm = TRUE)
+min_delay_value
+```
+
+```{r}
+delayed_summary <- AirlineDelays %>%
+  summarise(
+    total_delayed_flights = sum(arr_delay > 0, na.rm = TRUE),
+    count_15_to_30 = sum(arr_delay > 15 & arr_delay <= 30, na.rm = TRUE),
+    count_30_to_60 = sum(arr_delay > 30 & arr_delay <= 60, na.rm = TRUE),
+    count_over_60 = sum(arr_delay > 60, na.rm = TRUE)
+  )
+
+print(delayed_summary)
+```
+
+```{r}
+# List unique carriers
+unique_carriers <- AirlineDelays %>%
+  distinct(carrier, carrier_name)  # You can include carrier_name for more clarity
+
+# Display the unique carriers
+print(unique_carriers)
+```
+
+```{r}
+# Count the total number of delayed flights
+total_delayed_flights <- AirlineDelays %>%
+  filter(arr_delay > 0) %>%
+  summarise(total_delays = n())
+
+# Display the total number of delayed flights
+print(total_delayed_flights)
+```
+
+```{r}
+total_arrived_flights_corrected <- AirlineDelays %>%
+  group_by(carrier, airport) %>%
+  summarise(arrived_flights = sum(arr_flights, na.rm = TRUE)) %>%
+  summarise(total_flights = sum(arrived_flights))
+
+print(total_arrived_flights_corrected)
+```
+
+```{r}
+library(dplyr)
+library(knitr)
+
+# Summarize the dataset by carrier
+carrier_summary <- AirlineDelays %>%
+  group_by(carrier) %>%
+  summarise(
+    total_flights = sum(arr_flights, na.rm = TRUE),
+    total_delayed_flights = sum(arr_del15, na.rm = TRUE)  # Total delayed flights (15 minutes or more)
+  )
+
+# Calculate total metrics for August
+total_arrived_flights <- sum(AirlineDelays$arr_flights, na.rm = TRUE)
+total_cancelled_flights <- sum(AirlineDelays$arr_cancelled, na.rm = TRUE)
+total_diverted_flights <- sum(AirlineDelays$arr_diverted, na.rm = TRUE)
+
+# Total delayed flights (where arr_del15 > 0)
+total_delayed_flights <- sum(AirlineDelays$arr_del15, na.rm = TRUE)
+
+# Breakdown of reasons for delays
+delay_reasons <- AirlineDelays %>%
+  summarise(
+    carrier_delay = sum(carrier_ct, na.rm = TRUE),
+    weather_delay = sum(weather_ct, na.rm = TRUE),
+    nas_delay = sum(nas_ct, na.rm = TRUE),
+    security_delay = sum(security_ct, na.rm = TRUE),
+    late_aircraft_delay = sum(late_aircraft_ct, na.rm = TRUE)
+  )
+
+# Calculate percentages for delay reasons
+delay_percentages <- delay_reasons / total_delayed_flights * 100
+
+# Create the summary table with detailed sections for delays
+summary_table <- data.frame(
+  Characteristic = c("Total Months of Data (August)", 
+                     "Total Carriers", 
+                     "Total Arrived Flights (Count Data)",
+                     "Total Delayed Flights (15+ min)", 
+                     "  - Carrier Delays",                 
+                     "  - Weather Delays",                 
+                     "  - NAS Delays",                     
+                     "  - Security Delays",                
+                     "  - Late Aircraft Delays",           
+                     "Total Cancelled Flights", 
+                     "Total Diverted Flights",
+                     "Cancelled Flights (%)", 
+                     "Diverted Flights (%)"),
+  Value = c(1,  # Total months (August)
+            length(unique(AirlineDelays$carrier)), 
+            round(total_arrived_flights, 2), 
+            round(total_delayed_flights, 2),  
+            round(delay_reasons$carrier_delay, 2),  
+            round(delay_reasons$weather_delay, 2),  
+            round(delay_reasons$nas_delay, 2),      
+            round(delay_reasons$security_delay, 2), 
+            round(delay_reasons$late_aircraft_delay, 2), 
+            round(total_cancelled_flights, 2), 
+            round(total_diverted_flights, 2),
+            round((total_cancelled_flights / total_arrived_flights) * 100, 2), 
+            round((total_diverted_flights / total_arrived_flights) * 100, 2))
+)
+
+# Format the delay reasons to include percentages in parentheses
+summary_table$Characteristic[5:9] <- paste0(
+  summary_table$Characteristic[5:9], 
+  " (", round(delay_percentages, 2), "%)"
+)
+
+# Display the summary table
+kable(summary_table, caption = "Table 1: Summary of Flight Arrivals, Delays, Cancellations, and Diversions (August Data)", 
+      format.args = list(big.mark = ",", scientific = FALSE))
+```
+
+### Summary of Table 1:
+
+Dataset 1 takes a deep dive into the airline data, offering interesting
+insights into how different airlines performed. The dataset is made up
+of information regarding flight arrivals and delays across various U.S.
+airports, focusing specifically on data from August 2023. It includes a
+total of 171,666 observations with a variety of relevant variables
+related to airline performance. Overall, there were a whopping
+62,146,805 arriving flights, showing just how busy the skies were.
+However, not everything went smoothly; 11,375,095 of those flights were
+delayed by at least 15 minutes, which is a significant number and
+definitely impacts travelers.
+
+When I looked at the reasons for these delays, it became clear that most
+were due to issues on the airlines' end, with 3,565,081 flights (31.34%)
+delayed because of carrier-related problems. Weather played a role too,
+causing delays for 385,768 flights (3.39%). National Airspace System
+delays accounted for another 3,322,433 flights (29.21%). Security delays
+were relatively minor, affecting just 26,930 flights (0.24%), while late
+arrivals of other aircraft were responsible for 4,074,891 flights
+(35.82%).
+
+On the cancellation front, there were 1,290,923 flights that were called
+off, which is about 2.08% of all arriving flights. Additionally, 148,007
+flights were diverted, a small fraction as well.
+
+These numbers highlight the challenges that airlines face, especially
+with delays stemming mainly from their own operations. While weather and
+air traffic issues also contribute, it’s clear that improving airline
+efficiency could make a real difference. Overall, the relatively low
+rates of cancellations and diversions suggest that, despite the delays,
+the month appears to have been fairly stable for airline operations.
+
+```{r}
+library(dplyr)
+library(knitr)
+
+# Summarize the dataset by carrier
+summary_by_airline <- AirlineDelays %>%
+  group_by(carrier, carrier_name) %>%
+  summarise(
+    total_flights = sum(arr_flights, na.rm = TRUE),
+    delayed_flights = sum(arr_del15, na.rm = TRUE),
+    cancelled_flights = sum(arr_cancelled, na.rm = TRUE)
+  ) %>%
+  ungroup() %>%
+  mutate(
+    on_time_flights = total_flights - delayed_flights,
+    on_time_percentage = round((on_time_flights / total_flights) * 100, 0),
+    delayed_percentage = round((delayed_flights / total_flights) * 100, 0),
+    cancelled_percentage = round((cancelled_flights / total_flights) * 100, 0)
+  )
+
+# Create a new table with selected columns
+table1 <- summary_by_airline %>%
+  select(carrier, carrier_name, on_time_flights, on_time_percentage, 
+         delayed_flights, delayed_percentage, 
+         cancelled_flights, cancelled_percentage)
+
+# Display the summary table
+kable(table1, caption = "Table 2: Flight Summary by Airline (August 2023)", 
+      format.args = list(big.mark = ",", scientific = FALSE))
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+# Summarize the dataset by carrier
+summary_by_airline <- AirlineDelays %>%
+  group_by(carrier, carrier_name) %>%
+  summarise(
+    total_flights = sum(arr_flights, na.rm = TRUE),
+    delayed_flights = sum(arr_del15, na.rm = TRUE),
+    cancelled_flights = sum(arr_cancelled, na.rm = TRUE),
+    .groups = 'drop'  # Prevent grouping warnings
+  )
+
+# Reshape data for plotting
+summary_long <- summary_by_airline %>%
+  pivot_longer(cols = c(total_flights, delayed_flights, cancelled_flights),
+               names_to = "Flight_Status",
+               values_to = "Count")
+
+# Create the bar plot
+ggplot(summary_long, aes(x = reorder(carrier_name, -Count), y = Count, fill = Flight_Status)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Flight Summary by Airline (August 2023)",
+       x = "Airline",
+       y = "Number of Flights",
+       fill = "Flight Status") +
+  scale_y_continuous(labels = scales::label_comma()) +  # Format y-axis to avoid scientific notation
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+# Calculate total counts for pie chart
+total_counts <- summary_by_airline %>%
+  summarise(
+    total_flights = sum(total_flights),
+    delayed_flights = sum(delayed_flights),
+    cancelled_flights = sum(cancelled_flights)
+  ) %>%
+  pivot_longer(cols = everything(), names_to = "Flight_Status", values_to = "Count")
+
+# Create the pie chart
+ggplot(total_counts, aes(x = "", y = Count, fill = Flight_Status)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  labs(title = "Proportion of Flight Status (August 2023)",
+       fill = "Flight Status") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), axis.text.x = element_blank())
+```
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+# Summarize reasons for delays
+delay_reasons <- AirlineDelays %>%
+  summarise(
+    Carrier_Delay = sum(carrier_ct, na.rm = TRUE),
+    Weather_Delay = sum(weather_ct, na.rm = TRUE),
+    NAS_Delay = sum(nas_ct, na.rm = TRUE),
+    Security_Delay = sum(security_ct, na.rm = TRUE),
+    Late_Aircraft_Delay = sum(late_aircraft_ct, na.rm = TRUE)
+  )
+
+# Reshape the data for plotting
+delay_reasons_long <- pivot_longer(delay_reasons, cols = everything(), 
+                                    names_to = "Reason", values_to = "Count")
+
+# Create the bar chart
+ggplot(delay_reasons_long, aes(x = Reason, y = Count, fill = Reason)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Reasons for Flight Delays (August 2023)",
+       x = "Reason for Delay",
+       y = "Number of Delays") +
+  scale_y_continuous(labels = scales::comma) +  # Format y-axis labels as whole numbers
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ## Dataset 2
