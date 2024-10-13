@@ -14,7 +14,7 @@ execute:
 editor: 
   markdown: 
     wrap: 72
-theme: cyborg
+theme: united
 ---
 
 Bayesian linear regression (BLR) is a statistical approach that uses

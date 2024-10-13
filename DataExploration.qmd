@@ -13,7 +13,7 @@ execute:
 editor: 
   markdown: 
     wrap: 72
-theme: cyborg
+theme: united
 ---
 
 ## Dataset 1
@@ -290,25 +290,44 @@ summary_by_airline <- AirlineDelays %>%
     .groups = 'drop'  # Prevent grouping warnings
   )
 
+# Calculate proportions
+summary_by_airline <- summary_by_airline %>%
+  mutate(
+    delayed_proportion = delayed_flights / total_flights,
+    cancelled_proportion = cancelled_flights / total_flights
+  ) %>%
+  select(carrier, carrier_name, total_flights, delayed_proportion, cancelled_proportion)
+
 # Reshape data for plotting
 summary_long <- summary_by_airline %>%
-  pivot_longer(cols = c(total_flights, delayed_flights, cancelled_flights),
+  pivot_longer(cols = c(delayed_proportion, cancelled_proportion),
                names_to = "Flight_Status",
-               values_to = "Count")
+               values_to = "Proportion")
 
 # Create the bar plot
-ggplot(summary_long, aes(x = reorder(carrier_name, -Count), y = Count, fill = Flight_Status)) +
+ggplot(summary_long, aes(x = reorder(carrier_name, -Proportion), y = Proportion, fill = Flight_Status)) +
   geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Flight Summary by Airline (August 2023)",
+  labs(title = "Flight Status Proportions by Airline (August 2023)",
        x = "Airline",
-       y = "Number of Flights",
+       y = "Proportion of Flights",
        fill = "Flight Status") +
-  scale_y_continuous(labels = scales::label_comma()) +  # Format y-axis to avoid scientific notation
+  scale_y_continuous(labels = scales::label_percent()) +  # Format y-axis as percentage
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 ```
 
 ```{r}
+# Summarize the dataset by carrier
+summary_by_airline <- AirlineDelays %>%
+  group_by(carrier, carrier_name) %>%
+  summarise(
+    total_flights = sum(arr_flights, na.rm = TRUE),
+    delayed_flights = sum(arr_del15, na.rm = TRUE),
+    cancelled_flights = sum(arr_cancelled, na.rm = TRUE),
+    .groups = 'drop'  # Prevent grouping warnings
+  )
+
 # Calculate total counts for pie chart
 total_counts <- summary_by_airline %>%
   summarise(
@@ -316,6 +335,8 @@ total_counts <- summary_by_airline %>%
     delayed_flights = sum(delayed_flights),
     cancelled_flights = sum(cancelled_flights)
   ) %>%
+  mutate(on_time_flights = total_flights - (delayed_flights + cancelled_flights)) %>%
+  select(-total_flights) %>%  # Remove total_flights if not needed in the pie chart
   pivot_longer(cols = everything(), names_to = "Flight_Status", values_to = "Count")
 
 # Create the pie chart
@@ -326,6 +347,8 @@ ggplot(total_counts, aes(x = "", y = Count, fill = Flight_Status)) +
        fill = "Flight Status") +
   theme_minimal() +
   theme(axis.title.x = element_blank(), axis.title.y = element_blank(), axis.text.x = element_blank())
+
+
 ```
 
 ```{r}

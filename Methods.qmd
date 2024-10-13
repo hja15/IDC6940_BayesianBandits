@@ -1,0 +1,204 @@
+---
+title: "Methods"
+author: "Heather Anderson"
+format:
+  html:
+    link-external-icon: true
+    link-external-newwindow: true
+    toc: true
+course: Capstone Projects in Data Science
+bibliography: references.bib
+self-contained: true
+execute: 
+  warning: false
+  message: false
+editor: 
+  markdown: 
+    wrap: 72
+theme: united
+---
+
+## 
+
+## **Data Source**
+
+The dataset utilized in this analysis is derived from the "Airline Delay
+Cause" dataset, which encompasses flight arrival and delay information
+for U.S. airports. The dataset includes various attributes such as the
+number of arriving flights, delay reasons, cancellations, and
+diversions, spanning multiple years and airlines. For this study, the
+focus was specifically on data from August 2023, which consists of
+171,666 observations.
+
+## **Data Preparation**
+
+Prior to analysis, the dataset was cleaned and preprocessed. Missing
+values were identified and handled appropriately to ensure the
+robustness of the model. Specifically, we filtered out any observations
+where the dependent variable (arrival delay) or independent variables
+(carrier delays, weather delays, and NAS delays) were missing. The
+cleaning process ensured that our dataset only included relevant entries
+for the analysis.
+
+## **Variables**
+
+The dependent variable in this analysis was the total arrival delay
+(arr_delay), measured in minutes. The independent variables included:
+
+-   **Weather Count (weather_ct)**: The number of delays attributed to
+    weather-related issues.
+
+-   **Carrier Count (carrier_ct)**: The number of delays attributed to
+    airline-related issues.
+
+-   **NAS Count (nas_ct)**: The number of delays attributed to the
+    National Airspace System.
+
+## **Bayesian Linear Regression Model**
+
+Bayesian Linear Regression (BLR) is a powerful statistical method that
+combines the principles of linear regression with Bayesian inference.
+This approach allows us to model the relationship between a dependent
+variable (e.g., flight arrival delays) and one or more independent
+variables (e.g., weather-related delays, carrier-related delays, and NAS
+delays) while incorporating uncertainty and prior beliefs about these
+relationships. To analyze the impact of the independent variables on
+arrival delays, a Bayesian linear regression model was implemented using
+the brms package in R [@R]. The model was formulated as follows:
+
+$$
+\text{arr\_delay} \sim \text{weather\_ct} + \text{carrier\_ct} + \text{nas\_ct}
+$$
+
+This model specification allows us to assess the relationship between
+arrival delays and the specified delay reasons while accounting for the
+uncertainty inherent in the data.
+
+### Key Concepts
+
+1.  Linear Regression:
+    The basic form of linear regression models the relationship between
+    the dependent variable \\( y \\) and independent variables \\( x_1,
+    x_2, \\ldots, x_n \\) using a linear equation:
+    \$\$
+    y = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + \\ldots + \\beta_n
+    x_n + \\epsilon
+    \$\$
+    Here, \\( \\beta_i \\) represents the coefficients that indicate the
+    strength and direction of the relationships, and \\( \\epsilon \\)
+    is the error term.
+2.  Bayesian Inference:
+    In Bayesian statistics, we update our beliefs about parameters using
+    Bayes’ theorem:
+    \$\$
+    P(\\beta \| \\text{data}) = \\frac{P(\\text{data} \| \\beta) \\cdot
+    P(\\beta)}{P(\\text{data})}
+    \$\$
+    This formula allows us to derive the posterior distribution of the
+    parameters after observing the data, taking into account our prior
+    beliefs \\( P(\\beta) \\) and the likelihood of the data given those
+    parameters \\( P(\\text{data} \| \\beta) \\).
+
+### Steps in Bayesian Linear Regression
+
+1.  **Model Specification**: Define the linear relationship between the
+    dependent and independent variables.
+
+2.  **Choose Priors**: Select prior distributions for the model
+    parameters, reflecting any existing knowledge about their values.
+
+3.  **Data Collection**: Gather relevant data for the variables in the
+    model.
+
+4.  **Model Fitting**: Use computational methods, such as Markov Chain
+    Monte Carlo (MCMC), to estimate the posterior distributions of the
+    parameters based on the observed data.
+
+5.  **Result Interpretation**: Analyze the posterior distributions to
+    understand the relationships between variables, including estimating
+    means and credible intervals.
+
+### Advantages of Bayesian Linear Regression 
+
+[@Zyphur2015-pz]
+
+-   **Incorporation of Prior Knowledge**
+
+    *-Allows for the inclusion of expert knowledge through prior
+    distributions, enhancing model accuracy.*
+
+-   **Uncertainty Quantification**
+
+    *-Provides a full posterior distribution for each parameter,
+    offering a nuanced understanding of uncertainty.*
+
+-   **Expanded Hypotheses**
+
+    *-Allows for a broader range of testable hypotheses.*
+
+    *-Results interpreted intuitively, avoiding reliance on NHST.*
+
+-   **Automatic Meta-Analyses**
+
+    *-Combines prior findings with new data seamlessly.*
+
+    *-Facilitates integration of existing research into new studies.*
+
+-   **Improved Handling of Small Samples**
+
+    *-Prior findings enhance the robustness of results.*
+
+    *-Reduces issues associated with small-sample studies.*
+
+-   **Complex Model Estimation**
+
+    *-Capable of estimating models where traditional methods struggle.*
+
+    *-Handles model complexity effectively, expanding analytical
+    possibilities.*
+
+### Conclusion
+
+Bayesian Linear Regression offers a comprehensive framework for
+analyzing the factors influencing flight delays, making it an invaluable
+tool for understanding complex interactions in the aviation industry.
+
+## **Model Fitting**
+
+The Bayesian model was fitted using Markov Chain Monte Carlo (MCMC)
+methods, with the following parameters:
+
+-   **Chains**: 4
+
+-   **Iterations**: 2000
+
+-   **Warmup**: 1000
+
+These settings were chosen to ensure adequate convergence and to provide
+a stable estimate of the posterior distribution.
+
+## **Prior Distributions**
+
+Prior distributions for the model coefficients were specified as normal
+distributions with a mean of 0 and a standard deviation of 5, reflecting
+a relatively uninformative prior that allows the data to inform the
+posterior distributions.
+
+## **Model Assessment**
+
+Model diagnostics were conducted to evaluate convergence and the quality
+of the fitted model. The summary of the model output, along with trace
+plots, was examined to ensure that the MCMC chains had stabilized and
+adequately explored the parameter space.
+
+## **Why Bayesian?**
+
+Bayesian methods have some great advantages that make them a good fit
+for this analysis. They allow us to bring in prior knowledge, making the
+results more informed. Plus, they make it easier to understand what the
+findings mean, especially when we’re working with smaller datasets.
+Bayesian approaches also do a fantastic job of capturing uncertainty,
+which is really important when we’re dealing with something as complex
+as airline delays, where a lot of different factors are at play.
+Overall, these features help us get a clearer picture of what’s going on
+in the data.
