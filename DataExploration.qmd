@@ -382,6 +382,34 @@ ggplot(delay_reasons_long, aes(x = Reason, y = Count, fill = Reason)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+```{r}
+citation()
+```
+
+```{r}
+options(repos = c(CRAN = "https://cloud.r-project.org/"))
+install.packages("brms")
+library(brms)
+library(dplyr)
+
+#Clean the data: Handle missing values and outliers, Filter out any irrelevant data (e.g., non-weather-related delays)
+AirlineDelays1 <- AirlineDelays %>%
+    filter(!is.na(arr_delay), !is.na(weather_ct), !is.na(carrier_ct), !is.na(nas_ct))
+
+#Set Up the Model: Define dependent variable (arr_delay) and independent variables (weather_ct, carrier_ct, and nas_ct).
+formula <- arr_delay ~ weather_ct + carrier_ct + nas_ct
+
+#Fit the Bayesian Model
+model <- brm(formula, data = AirlineDelays, family = gaussian(),
+             prior = set_prior("normal(0, 5)", class = "b"),
+             chains = 4, iter = 2000, warmup = 1000)
+
+#Model Summary and Diagnostics
+summary(model) #Model Summary
+plot(model) #Check for Convergence
+
+```
+
 ## Dataset 2
 
 <https://github.com/YBI-Foundation/Dataset/blob/main/Airline%20Delay.csv>
