@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Heather Anderson (Advisor: Dr. Seals)">
-<meta name="dcterms.date" content="2024-10-13">
+<meta name="dcterms.date" content="2024-10-20">
 
 <title>Bayesian Linear Regression</title>
 <style>
@@ -3157,7 +3157,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 13, 2024</p>
+      <p class="date">October 20, 2024</p>
     </div>
   </div>
   
@@ -3172,15 +3172,15 @@ window.Quarto = {
 <section id="introduction" class="level1">
 <h1><strong>Introduction</strong></h1>
 <p>Bayesian linear regression (BLR) is a statistical approach that uses Bayesian principles to model relationships between variables. It combines prior knowledge with data to make predictions and handle uncertainty in the estimates. Unlike traditional Frequentist methods, BLR provides a probability-based approach for both estimating values and making forecasts.</p>
-<p>Linear regression itself is a key technique for predicting one variable based on another by finding the best-fitting line that minimizes the gap between what we predict and what actually happens <span class="citation" data-cites="noauthor_2021-ow">(<a href="#ref-noauthor_2021-ow" role="doc-biblioref"><span>“What Is Linear Regression?”</span> 2021</a>)</span>. This method is used in both Frequentist and Bayesian approaches and forms the groundwork for more advanced analysis.</p>
-<p>In Bayesian linear regression, Bayes’ Theorem is used to update prior beliefs about model parameters with new data, resulting in a posterior distribution that reflects a range of possible values rather than a single estimate <span class="citation" data-cites="Bayes1991-uo">(<a href="#ref-Bayes1991-uo" role="doc-biblioref">Bayes 1763</a>)</span>. This method takes into account previous knowledge and measures the uncertainty in predictions, giving a richer and often more useful picture compared to the single-point estimates from Frequentist approaches <span class="citation" data-cites="Koehrsen2018-ff">(<a href="#ref-Koehrsen2018-ff" role="doc-biblioref">Koehrsen 2018</a>)</span>.</p>
-<p>The Bayesian Analysis Toolkit (BAT) provides a real-world application of Bayesian methods, utilizing Markov Chain Monte Carlo (MCMC) techniques for posterior sampling and model comparison. BAT allows for flexible modeling and easy numerical integration, showing how Bayesian techniques can be applied in practical situations <span class="citation" data-cites="Caldwell2009-bw">(<a href="#ref-Caldwell2009-bw" role="doc-biblioref">Caldwell, Kollár, and Kröninger 2009</a>)</span>.</p>
-<p>Visualization plays a critical role in Bayesian workflows, as highlighted by Gabry et al. <span class="citation" data-cites="Gabry2019-qz">(<a href="#ref-Gabry2019-qz" role="doc-biblioref">Gabry et al. 2019</a>)</span>. Tools such as trace plots and Hamiltonian Monte Carlo (HMC) diagnostics are crucial for figuring out if a model is working well and identifying any issues. In addition, techniques like posterior predictive checks and leave-one-out (LOO) cross-validation help fine-tune the model by testing how well it predicts new data.</p>
-<p>Zyphur and Oswald <span class="citation" data-cites="Zyphur2015-pz">(<a href="#ref-Zyphur2015-pz" role="doc-biblioref">Zyphur and Oswald 2015</a>)</span> compare Bayesian and Frequentist methods, showing that Bayesian techniques often offer more dependable results. They do this by incorporating prior knowledge and overcoming some of the challenges that Frequentist methods face, especially with small sample sizes. Their study highlights how Bayesian methods can enhance predictions and help in better understanding the data.</p>
-<p>Van de Schoot et al. <span class="citation" data-cites="Van_de_Schoot2021-hd">(<a href="#ref-Van_de_Schoot2021-hd" role="doc-biblioref">Schoot et al. 2021</a>)</span> explore how Bayesian statistics are becoming increasingly relevant and adaptable in today’s research. They point out that, with the help of modern deep learning and powerful computers, Bayesian methods are significantly improving the analysis of complex data. For instance, techniques like variational autoencoders, which combine Bayesian ideas with deep learning, are great for managing high-dimensional data and making precise predictions. This blend of Bayesian methods with advanced technology shows how Bayesian analysis is evolving to tackle modern challenges and boost scientific progress.</p>
-<p>Gelman et al. <span class="citation" data-cites="Gelman2013-aj">(<a href="#ref-Gelman2013-aj" role="doc-biblioref">Gelman et al. 2013</a>)</span> offer a detailed look at Bayesian methods, including how they apply to linear regression. They highlight the advantages of using Bayesian approaches to handle uncertainty and improve models by incorporating prior information, which in turn boosts predictive accuracy and overall model performance.</p>
-<p>Recent progress in variational inference, as highlighted by Blei, Kucukelbir, and McAuliffe <span class="citation" data-cites="Blei2017-kg">(<a href="#ref-Blei2017-kg" role="doc-biblioref">Blei, Kucukelbir, and McAuliffe 2017</a>)</span>, offers scalable alternatives to MCMC methods. Variational inference works by approximating posterior distributions through optimization, making it a more efficient choice for handling large datasets and complex models.</p>
-<p>Carpenter et al. <span class="citation" data-cites="Carpenter2017-ul">(<a href="#ref-Carpenter2017-ul" role="doc-biblioref">Carpenter et al. 2017</a>)</span> focus on how Bayesian methods are used in hierarchical models, particularly for complex systems. They point out that Bayesian hierarchical modeling is especially useful for handling data with multiple levels and capturing detailed relationships between variables, which improves both the flexibility and the accuracy of models in practical situations.</p>
+<p>Linear regression itself is a key technique for predicting one variable based on another by finding the best-fitting line that minimizes the gap between what we predict and what actually happens <span class="citation" data-cites="noauthor2021">(<a href="#ref-noauthor2021" role="doc-biblioref"><span>“What Is Linear Regression?”</span> 2021</a>)</span>. This method is used in both Frequentist and Bayesian approaches and forms the groundwork for more advanced analysis.</p>
+<p>In Bayesian linear regression, Bayes’ Theorem is used to update prior beliefs about model parameters with new data, resulting in a posterior distribution that reflects a range of possible values rather than a single estimate <span class="citation" data-cites="Bayes1991">(<a href="#ref-Bayes1991" role="doc-biblioref">Bayes 1763</a>)</span>. This method takes into account previous knowledge and measures the uncertainty in predictions, giving a richer and often more useful picture compared to the single-point estimates from Frequentist approaches <span class="citation" data-cites="Koehrsen2018">(<a href="#ref-Koehrsen2018" role="doc-biblioref">Koehrsen 2018</a>)</span>.</p>
+<p>The Bayesian Analysis Toolkit (BAT) provides a real-world application of Bayesian methods, utilizing Markov Chain Monte Carlo (MCMC) techniques for posterior sampling and model comparison. BAT allows for flexible modeling and easy numerical integration, showing how Bayesian techniques can be applied in practical situations <span class="citation" data-cites="Caldwell2009">(<a href="#ref-Caldwell2009" role="doc-biblioref">Caldwell, Kollár, and Kröninger 2009</a>)</span>.</p>
+<p>Visualization plays a critical role in Bayesian workflows, as highlighted by Gabry et al. <span class="citation" data-cites="Gabry2019">(<a href="#ref-Gabry2019" role="doc-biblioref">Gabry et al. 2019</a>)</span>. Tools such as trace plots and Hamiltonian Monte Carlo (HMC) diagnostics are crucial for figuring out if a model is working well and identifying any issues. In addition, techniques like posterior predictive checks and leave-one-out (LOO) cross-validation help fine-tune the model by testing how well it predicts new data.</p>
+<p>Zyphur and Oswald <span class="citation" data-cites="Zyphur2015">(<a href="#ref-Zyphur2015" role="doc-biblioref">Zyphur and Oswald 2015</a>)</span> compare Bayesian and Frequentist methods, showing that Bayesian techniques often offer more dependable results. They do this by incorporating prior knowledge and overcoming some of the challenges that Frequentist methods face, especially with small sample sizes. Their study highlights how Bayesian methods can enhance predictions and help in better understanding the data.</p>
+<p>Van de Schoot et al. <span class="citation" data-cites="Van2021">(<a href="#ref-Van2021" role="doc-biblioref">Schoot et al. 2021</a>)</span> explore how Bayesian statistics are becoming increasingly relevant and adaptable in today’s research. They point out that, with the help of modern deep learning and powerful computers, Bayesian methods are significantly improving the analysis of complex data. For instance, techniques like variational autoencoders, which combine Bayesian ideas with deep learning, are great for managing high-dimensional data and making precise predictions. This blend of Bayesian methods with advanced technology shows how Bayesian analysis is evolving to tackle modern challenges and boost scientific progress.</p>
+<p>Gelman et al. <span class="citation" data-cites="Gelman2013">(<a href="#ref-Gelman2013" role="doc-biblioref">Gelman et al. 2013</a>)</span> offer a detailed look at Bayesian methods, including how they apply to linear regression. They highlight the advantages of using Bayesian approaches to handle uncertainty and improve models by incorporating prior information, which in turn boosts predictive accuracy and overall model performance.</p>
+<p>Recent progress in variational inference, as highlighted by Blei, Kucukelbir, and McAuliffe <span class="citation" data-cites="Blei2017">(<a href="#ref-Blei2017" role="doc-biblioref">Blei, Kucukelbir, and McAuliffe 2017</a>)</span>, offers scalable alternatives to MCMC methods. Variational inference works by approximating posterior distributions through optimization, making it a more efficient choice for handling large datasets and complex models.</p>
+<p>Carpenter et al. <span class="citation" data-cites="Carpenter2017l">(<a href="#ref-Carpenter2017l" role="doc-biblioref">Carpenter et al. 2017</a>)</span> focus on how Bayesian methods are used in hierarchical models, particularly for complex systems. They point out that Bayesian hierarchical modeling is especially useful for handling data with multiple levels and capturing detailed relationships between variables, which improves both the flexibility and the accuracy of models in practical situations.</p>
 <p>In conclusion, Bayesian linear regression is a powerful tool for modeling and predicting how variables are related. It stands out because it blends prior knowledge with a way to handle uncertainty. With the help of advanced diagnostics, practical tools like BAT, and recent breakthroughs in computing and deep learning, Bayesian methods show just how flexible and effective they can be for analyzing complex data in today’s world.</p>
 </section>
 <section id="methods" class="level1">
@@ -3722,7 +3722,7 @@ window.Quarto = {
 </section>
 <section id="advantages-of-bayesian-linear-regression" class="level3">
 <h3 class="anchored" data-anchor-id="advantages-of-bayesian-linear-regression">Advantages of Bayesian Linear Regression</h3>
-<p><span class="citation" data-cites="Zyphur2015-pz">(<a href="#ref-Zyphur2015-pz" role="doc-biblioref">Zyphur and Oswald 2015</a>)</span></p>
+<p><span class="citation" data-cites="Zyphur2015">(<a href="#ref-Zyphur2015" role="doc-biblioref">Zyphur and Oswald 2015</a>)</span></p>
 <ul>
 <li><p><strong>Incorporation of Prior Knowledge</strong></p>
 <p><em>-Allows for the inclusion of expert knowledge through prior distributions, enhancing model accuracy.</em></p></li>
@@ -3782,37 +3782,37 @@ window.Quarto = {
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-Bayes1991-uo" class="csl-entry" role="listitem">
+<div id="ref-Bayes1991" class="csl-entry" role="listitem">
 Bayes, T. 1763. <span>“An Essay Towards Solving a Problem in the Doctrine of Chances. 1763.”</span>
 </div>
-<div id="ref-Blei2017-kg" class="csl-entry" role="listitem">
+<div id="ref-Blei2017" class="csl-entry" role="listitem">
 Blei, David M, Alp Kucukelbir, and Jon D McAuliffe. 2017. <span>“Variational Inference: A Review for Statisticians.”</span> <em>J. Am. Stat. Assoc.</em> 112 (518): 859–77.
 </div>
-<div id="ref-Caldwell2009-bw" class="csl-entry" role="listitem">
+<div id="ref-Caldwell2009" class="csl-entry" role="listitem">
 Caldwell, Allen, Daniel Kollár, and Kevin Kröninger. 2009. <span>“<span>BAT</span> – the Bayesian Analysis Toolkit.”</span> <em>Comput. Phys. Commun.</em> 180 (11): 2197–2209.
 </div>
-<div id="ref-Carpenter2017-ul" class="csl-entry" role="listitem">
+<div id="ref-Carpenter2017l" class="csl-entry" role="listitem">
 Carpenter, Bob, Andrew Gelman, Matthew D Hoffman, Daniel Lee, Ben Goodrich, Michael Betancourt, Marcus A Brubaker, Jiqiang Guo, Peter Li, and Allen Riddell. 2017. <span>“Stan: A Probabilistic Programming Language.”</span> <em>J. Stat. Softw.</em> 76 (1).
 </div>
-<div id="ref-Gabry2019-qz" class="csl-entry" role="listitem">
+<div id="ref-Gabry2019" class="csl-entry" role="listitem">
 Gabry, Jonah, Daniel Simpson, Aki Vehtari, Michael Betancourt, and Andrew Gelman. 2019. <span>“Visualization in Bayesian Workflow.”</span> <em>J. R. Stat. Soc. Ser. A Stat. Soc.</em> 182 (2): 389–402.
 </div>
-<div id="ref-Gelman2013-aj" class="csl-entry" role="listitem">
+<div id="ref-Gelman2013" class="csl-entry" role="listitem">
 Gelman, Andrew, John B Carlin, Hal S Stern, David B Dunson, Aki Vehtari, and Donald B Rubin. 2013. <em>Bayesian Data Analysis</em>. Chapman; Hall/CRC.
 </div>
-<div id="ref-Koehrsen2018-ff" class="csl-entry" role="listitem">
+<div id="ref-Koehrsen2018" class="csl-entry" role="listitem">
 Koehrsen, Will. 2018. <span>“Introduction to Bayesian Linear Regression.”</span> <a href="https://towardsdatascience.com/introduction-to-bayesian-linear-regression-e66e60791ea7" class="uri">https://towardsdatascience.com/introduction-to-bayesian-linear-regression-e66e60791ea7</a>.
 </div>
 <div id="ref-R" class="csl-entry" role="listitem">
 R Core Team. 2023. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
 </div>
-<div id="ref-Van_de_Schoot2021-hd" class="csl-entry" role="listitem">
+<div id="ref-Van2021" class="csl-entry" role="listitem">
 Schoot, Rens van de, Sarah Depaoli, Ruth King, Bianca Kramer, Kaspar Märtens, Mahlet G Tadesse, Marina Vannucci, et al. 2021. <span>“Bayesian Statistics and Modelling.”</span> <em>Nat. Rev. Methods Primers</em> 1 (1).
 </div>
-<div id="ref-noauthor_2021-ow" class="csl-entry" role="listitem">
+<div id="ref-noauthor2021" class="csl-entry" role="listitem">
 <span>“What Is Linear Regression?”</span> 2021. <a href="https://www.ibm.com/topics/linear-regression" class="uri">https://www.ibm.com/topics/linear-regression</a>.
 </div>
-<div id="ref-Zyphur2015-pz" class="csl-entry" role="listitem">
+<div id="ref-Zyphur2015" class="csl-entry" role="listitem">
 Zyphur, Michael J, and Frederick L Oswald. 2015. <span>“Bayesian Estimation and Inference.”</span> <em>J. Manage.</em> 41 (2): 390–420.
 </div>
 </div></section></div></main>

@@ -1,14 +1,12 @@
 ---
 title: "Bayesian Linear Regression"
-subtitle: "Heather Anderson & Sara Parrish"
-author: "Bayesian Bandits"
-execute:
-  echo: true
-  warning: false
-  message: false
-  error: false
-format: 
+subtitle: "Literature Review"
+author: "Heather Anderson, Sara Parrish (Advisor: Dr. Seals)"
+date: 10/03/2024
+date-format: "MMM D, YYYY"
+format:
   revealjs:
+    css: custom.css
     theme: dark
     embed-resources: true
     slide-number: false
@@ -16,79 +14,205 @@ format:
     height: 900
     df-print: paged
     html-math-method: katex
-editor: source
+course: Capstone Projects in Data Science
+bibliography: references.bib
+csl: ieee.csl
+#always_allow_html: true # this allows to get PDF with HTML features
+self-contained: true
+execute: 
+  warning: false
+  message: false
+editor: 
+  markdown: 
+    wrap: 72
 pdf-separate-fragments: true
 fig-align: center
 ---
 
+# Introduction to Bayesian Linear Regression
 
-::: callout-important
-**Remember:** Your goal is to make your audience understand and care
-about your findings. By crafting a compelling story, you can effectively
-communicate the value of your data science project.
+- Regression under the *frequentist* framework
+    - Independent variables are used to predict dependent variables
+    - Linear regression finds best-fitting line to observed data to make further predictions
+      - Regression parameters ($\beta$) are assumed to be fixed
+    - Only collected data is used for approximation
+- Regression under the *Bayesian* framework
+    - Independent variables are used to predict dependent variables
+    - Regression parameters ($\beta$) *are not* assumed to be fixed
+    - Collected data is used alongside prior knowledge for approximation
 
-Carefully read this template since it has instructions and tips to
-writing!
+## Frequentist vs. Bayesian Approach
 
-More information about `revealjs`:
-<https://quarto.org/docs/reference/formats/presentations/revealjs.html>
+- **Frequentist** Approach
+  - Typical linear model 
+  
+$$
+Y = \beta_0 + \beta_1X + \varepsilon \tag{1}
+$$
+
+  - $Y$ : Dependent variable, the outcome
+  - $\beta_0$ : y intercept
+  - $\beta_1$ : The regression coefficient 
+  - $X$ : Independent variable
+  - $\varepsilon$ : Random error [@xiaogang]
+- $\hat\beta$ provides a point estimate
+
+
+## Frequentist vs. Bayesian Approach
+
+- **Bayesian** Approach
+  - A regression is constructed using probability distributions, not point estimates as in the frequentist approach
+  - Bayes Rule (2) is used to inform the model [@xiaogang]
+
+$$
+p(B|A) = \frac{p(A|B)\cdot p(B)}{p(A)} \tag{2}
+$$
+
+- Bayes Rule allows for the calculation of inverse probability ($p(B|A) \text{ from } p(A|B)$)
+- $p(B|A) \text{ and } p(A|B)$ are conditional probabilities
+- $p(A) \text{ and } p(B)$ are marginal probabilities [@lesaffre]
+
+
+## Frequentist vs. Bayesian Approach
+
+- **Bayesian** Approach
+    - Bayesian Inference can be written simply [@Koehrsen2018]
+    
+$$
+Posterior = \frac{Likelihood \times Prior}{Normalization}
+$$
+
+- The $Prior$ is model of prior knowledge on the subject
+- The $Likelihood$ is the probability of the data given the prior
+- The $Normalization$ is a constant that ensures the posterior distribution is a valid density function whose integration is equal to 1
+- The $Posterior$ is the probability model that expresses an updated view of the model parameters
+  - From the initial parameters of the prior
+  - Updated with new data expressed in the likelihood function
+
+
+## Frequentist vs. Bayesian Approach
+
+- **Bayesian** Approach
+  - A more formal expression of Bayes Rule applied for continous parameters
+  
+$$
+\begin{align*}
+p(\theta|y) =& \frac{ L(\theta|y)p(\theta) }{p(y)}\\
+\\
+p(\theta|y) \propto &   \text{ }L(\theta|y)p(\theta)
+\end{align*}
+$$
+
+- The normalization constant ($p(y)$ above) ensures the posterior distribution is a valid distribution
+  - The posterior density function can be written without this constant
+- The resulting prediction is not a point estimate, but a distribution [@Bayes1991]
+
+## Frequentist vs. Bayesian Approach
+
+:::{.callout-note}
+trying to include formulas for actual BLR :(
 :::
 
-## Introduction  {.smaller}
+- The Bayesian Linear Regression Model
 
--   Develop a storyline that captures attention and maintains interest.
+- The Likelihood 
 
--   Your audience is your peers
+- The Posterior 
 
--   Clearly state the problem or question you're addressing.
+- The Prior
 
--   Introduce why it is relevant needs.
 
--   Provide an overview of your approach.
+## Role of prior knowledge in shaping predictions
 
-In kernel estimator, weight function is known as kernel function
-[@efr2008]. Cite this paper [@bro2014principal]. The GEE [@wang2014].
-The PCA [@daffertshofer2004pca]\*
+- Priors can be subjective or objective
+    - objective is preferred
+- Noninformative priors can be used when there is not adequate prior
+    knowledge
+- Discounted priors are the result of adjusting a known prior to
+    better reflect the current data[@lesaffre]
 
-## Literature Review: Introduction to Bayesian Linear Regression
+![Figure from [@lesaffre]](images/priorposterior.png)
 
--   BLR definition and its significance in statistical modeling
+# Understanding the Bayesian Framework
 
--   Bayesian methods vs. Frequentist approaches
+::: {layout-ncol=2}
 
--   Role of prior knowledge in shaping predictions
+- Bayes’ theorem is used to update prior beliefs about model
+    parameters with new data
+    - This results in a posterior distribution [@Bayes1991]
+- Posterior distribution vs. point estimates
+    - measures the uncertainty in predictions
+    - richer picture for predictions
+    - better uncertainty quantification [@Koehrsen2018]
 
-## Literature Review: Understanding the Bayesian Framework
 
--   Explanation of Bayes’ theorem and its application in updating beliefs
+![Figure from [@lesaffre]](images/priorposterior.png){fig-align="right" width="50%"}
 
--   Posterior distribution vs. point estimates
+:::
 
--   How this leads to better uncertainty quantification
+## Interpreting the Posterior
 
-## Literature Review: Tools and Techniques in Bayesian Analysis
+- The marginal posterior density function (output) may not be available
+- Makov Chain Monte Carlo is commonly used
+  - Markov chain sequence establishes a sample space from the posterior
+  - Integration of samples generated through Monte Carlo techniques from the sample space
+- Some popular MCMC algorithms:
+  - Gibbs sampler
+  - Metropolis-Hastings (MH) [@lesaffre]
 
--   Introduction to the Bayesian Analysis Toolkit (BAT) and its features
+# Tools and Techniques in Bayesian Analysis
 
--   Markov Chain Monte Carlo (MCMC) for sampling and model comparison
+![BAT logo (https://bat.mpp.mpg.de/?page=home)](images/BAT.png){fig-align="right"}
 
--   Visualization tools (trace plots, HMC diagnostics) for model assessment
+- The Bayesian Analysis Toolkit (BAT)
+  - real-world application of Bayesian methods
+  - Markov Chain Monte Carlo (MCMC) for sampling and model comparison[@Caldwell2009]
+  - Visualization tools (trace plots, HMC diagnostics) for model
+    assessment [@Gabry2019]
 
-## Literature Review: Advantages of Bayesian Methods
+# Advantages of Bayesian Methods
 
--   Findings from Zyphur and Oswald on reliability with small samples
+:::{.callout-note}
+need more explanation for both statements on Zyphur and Oswald
+:::
 
--   Advancements in computing and their impact on Bayesian relevance
+- Findings from Zyphur and Oswald on reliability 
+  - Bayesian methods are more reliable with small samples
+  - Better predictions and understanding of data [@Zyphur2015]
 
--   Efficiency of variational inference as an alternative to MCMC
+- Better analysis of complex data due to advancements in computational power
+  - e.g. autoencoders [@Van2021]
 
-## Literature Review: Conclusion and Future Directions
+- Interpretation of posteriors 
+  - commonly done with MCMC
+  - variational inference has been offered as an alternative [@Blei2017]
+  
 
--   Key strengths of BLR: flexibility, uncertainty management
 
--   Encouragement of exploration of MCMC and foundational Bayesian principles
+# Conclusion and Future Directions
 
--   Potential for future applications in complex data analysis
+- Key strengths of BLR
+  - flexibility
+  - uncertainty management
+
+- Exploration of MCMC and foundational Bayesian principles
+
+- Potential for future applications in complex data analysis
+
+# Further Research
+
+**Modifications to BLR**
+
+  - Kernalization (with Gaussian kernel) and Sparsification[@surfacerough]
+  - Warping to handle non-linear trends [@warped]
+  - BLR in concert with k-means clustering to creat subdivisions of the population [@bridge]
+  - Use with Cauchy prior to improve performance with sparse array input [@cauchyprior]
+  - Gridded BLR by means of producing a model grid to predict storm winds [@stormwind]
+
+## References
+
+::: {#refs}
+:::
 
 
 ## Methods

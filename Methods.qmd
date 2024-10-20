@@ -76,28 +76,21 @@ uncertainty inherent in the data.
 
 ### Key Concepts
 
-1.  Linear Regression:
-    The basic form of linear regression models the relationship between
-    the dependent variable \\( y \\) and independent variables \\( x_1,
-    x_2, \\ldots, x_n \\) using a linear equation:
-    \$\$
-    y = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + \\ldots + \\beta_n
-    x_n + \\epsilon
-    \$\$
-    Here, \\( \\beta_i \\) represents the coefficients that indicate the
-    strength and direction of the relationships, and \\( \\epsilon \\)
-    is the error term.
-2.  Bayesian Inference:
-    In Bayesian statistics, we update our beliefs about parameters using
-    Bayes’ theorem:
-    \$\$
-    P(\\beta \| \\text{data}) = \\frac{P(\\text{data} \| \\beta) \\cdot
-    P(\\beta)}{P(\\text{data})}
-    \$\$
-    This formula allows us to derive the posterior distribution of the
-    parameters after observing the data, taking into account our prior
-    beliefs \\( P(\\beta) \\) and the likelihood of the data given those
-    parameters \\( P(\\text{data} \| \\beta) \\).
+1.  Linear Regression: The basic form of linear regression models the
+    relationship between the dependent variable \\( y \\) and
+    independent variables \\( x_1, x_2, \\ldots, x_n \\) using a linear
+    equation: \$\$ y = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 +
+    \\ldots + \\beta_n x_n + \\epsilon \$\$ Here, \\( \\beta_i \\)
+    represents the coefficients that indicate the strength and direction
+    of the relationships, and \\( \\epsilon \\) is the error term.
+2.  Bayesian Inference: In Bayesian statistics, we update our beliefs
+    about parameters using Bayes’ theorem: \$\$ P(\\beta \|
+    \\text{data}) = \\frac{P(\\text{data} \| \\beta) \\cdot
+    P(\\beta)}{P(\\text{data})} \$\$ This formula allows us to derive
+    the posterior distribution of the parameters after observing the
+    data, taking into account our prior beliefs \\( P(\\beta) \\) and
+    the likelihood of the data given those parameters \\( P(\\text{data}
+    \| \\beta) \\).
 
 ### Steps in Bayesian Linear Regression
 
@@ -118,9 +111,9 @@ uncertainty inherent in the data.
     understand the relationships between variables, including estimating
     means and credible intervals.
 
-### Advantages of Bayesian Linear Regression 
+### Advantages of Bayesian Linear Regression
 
-[@Zyphur2015-pz]
+[@Zyphur2015]
 
 -   **Incorporation of Prior Knowledge**
 
