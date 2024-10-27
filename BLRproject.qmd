@@ -124,6 +124,7 @@ library(dplyr)
 library(knitr)
 library(ggplot2)
 library(tidyr)
+library(bayesrules)
 ```
 
 ```{r, warning=FALSE, echo=FALSE, message=FALSE}
@@ -448,29 +449,53 @@ ggplot(delay_reasons_long, aes(x = Reason, y = Count, fill = Reason)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+## **Running the Model**
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+# Load necessary packages
+library(brms)
+
+# Clean the data: Handle missing values for relevant variables (arrival delay and weather-related incidents)
+AirlineDelays1 <- AirlineDelays %>%
+    filter(!is.na(arr_delay), !is.na(weather_ct))
+
+# Define the single-predictor Bayesian model
+single_predictor_model <- brm(
+  arr_delay ~ weather_ct, 
+  data = AirlineDelays1,  # Use the cleaned dataset here
+  family = gaussian(),
+  prior = c(
+    prior(normal(0, 5), class = "Intercept"),
+    prior(normal(0, 5), class = "b"),
+    prior(exponential(1), class = "sigma")
+  ),
+  chains = 4, 
+  iter = 2000, 
+  warmup = 1000, 
+  seed = 123
+)
+
+# Summarize the model output
+summary(single_predictor_model)
+plot(single_predictor_model)
+
+```
+
 ## **Data Preparation**
 
 Prior to analysis, the dataset was cleaned and preprocessed. Missing
-values were identified and handled appropriately to ensure the
-robustness of the model. Specifically, we filtered out any observations
-where the dependent variable (arrival delay) or independent variables
-(carrier delays, weather delays, and NAS delays) were missing. The
-cleaning process ensured that our dataset only included relevant entries
-for the analysis.
+values were identified and handled appropriately to ensure the integrity
+of the model. Specifically, I filtered out any observations where the
+dependent variable (arrival delay) or independent variable (weather
+delays) were missing. The cleaning process ensured that the dataset only
+included relevant entries for the analysis.
 
-## **Variables**
+## **Variables Used in Model**
 
 The dependent variable in this analysis was the total arrival delay
-(arr_delay), measured in minutes. The independent variables included:
-
--   **Weather Count (weather_ct)**: The number of delays attributed to
-    weather-related issues.
-
--   **Carrier Count (carrier_ct)**: The number of delays attributed to
-    airline-related issues.
-
--   **NAS Count (nas_ct)**: The number of delays attributed to the
-    National Airspace System.
+(arr_delay), measured in minutes. The independent variable was weather
+count (weather_ct), which is the number of delays attributed to
+weather-related issues.
 
 ## **Bayesian Linear Regression Model**
 
@@ -478,13 +503,13 @@ Bayesian Linear Regression (BLR) is a powerful statistical method that
 combines the principles of linear regression with Bayesian inference.
 This approach allows us to model the relationship between a dependent
 variable (e.g., flight arrival delays) and one or more independent
-variables (e.g., weather-related delays, carrier-related delays, and NAS
-delays) while incorporating uncertainty and prior beliefs about these
-relationships. To analyze the impact of the independent variables on
-arrival delays, a Bayesian linear regression model was implemented using
-the brms package in R [@R]. The model was formulated as follows:
+variables (e.g., weather-related delays) while incorporating uncertainty
+and prior beliefs about these relationships. To analyze the impact of
+the independent variable on arrival delays, a Bayesian linear regression
+model was implemented using the brms package in R [@R]. The model was
+formulated as follows:
 
-$$ \text{arr\_delay} \sim \text{weather\_ct} + \text{carrier\_ct} + \text{nas\_ct} $$
+$$ \text{arr\_delay} \sim \text{weather\_ct}$$
 
 This model specification allows us to assess the relationship between
 arrival delays and the specified delay reasons while accounting for the
@@ -614,6 +639,133 @@ in the data.
 
 # **Analysis and Results**
 
+## Table 3: Model Parameters and Estimates
+
+| **Parameter** | **Estimate** | **Standard Error** | **95% Credible Interval** |
+|-----------------|-----------------|-----------------|----------------------|
+| Intercept     | -2116.53     | 7.67               | \[-2131.41, -2100.91\]    |
+| Weather Count | 1041.97      | 2.66               | \[1036.73, 1047.15\]      |
+| Sigma         | 8676.19      | 15.52              | \[8646.95, 8706.92\]      |
+
+## Table 4: Model Diagnostics and Fit Statistics
+
+| **Statistic**                                | **Value**                |
+|----------------------------------------------|--------------------------|
+| Number of Observations                       | 171,426                  |
+| Model Family                                 | Gaussian                 |
+| Formula                                      | `arr_delay ~ weather_ct` |
+| Iterations                                   | 2000                     |
+| Warmup                                       | 1000                     |
+| Chains                                       | 4                        |
+| Effective Sample Size (Bulk)                 |                          |
+| Effective Sample Size (Tail)                 |                          |
+| Mean Arrival Delay (minutes)                 |                          |
+| Median Arrival Delay (minutes)               |                          |
+| Standard Deviation of Arrival Delay          |                          |
+| 95% Credible Interval for Mean Arrival Delay |                          |
+
+## Regression Line Plot
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+
+# Create a new data frame for the observed data
+observed_data <- AirlineDelays %>%
+  select(weather_ct, arr_delay)
+
+# Generate predictions from the model
+# Create a grid of weather_ct values for plotting the fitted line
+weather_seq <- seq(min(AirlineDelays$weather_ct, na.rm = TRUE), max(AirlineDelays$weather_ct, na.rm = TRUE), length.out = 100)
+prediction_data <- data.frame(weather_ct = weather_seq)
+
+# Get the fitted values from the Bayesian model
+predicted_values <- posterior_predict(single_predictor_model, newdata = prediction_data)
+
+# Calculate the mean predicted value for each weather incident
+mean_predicted <- apply(predicted_values, 2, mean)
+prediction_data$arr_delay <- mean_predicted
+
+# Create the plot
+ggplot() +
+  geom_point(data = observed_data, aes(x = weather_ct, y = arr_delay), alpha = 0.3) +  # observed data
+  geom_line(data = prediction_data, aes(x = weather_ct, y = arr_delay), color = "blue", size = 1) +  # fitted line
+  labs(title = "Bayesian Regression: Arrival Delays vs. Weather Incidents",
+       x = "Number of Weather Incidents",
+       y = "Arrival Delays (minutes)") +
+  theme_minimal()
+
+```
+
+## Model Overview
+
+The Bayesian linear regression model aimed to assess the relationship
+between weather-related incidents (\`weather_ct\`) and arrival delays
+(\`arr_delay\`) using data from the Airline Delays dataset for August
+2023. A Gaussian model was employed, with the following regression
+formula:\$\$\\text{arr\\\_delay} \\sim \\text{weather\\\_ct}\$\$The
+output from the model indicates a significant positive relationship
+between the number of weather incidents and the length of arrival
+delays.
+
+## Key Findings
+
+**Intercept:** The estimated intercept value is -2116.53 with a 95%
+credible interval of \[-2131.41, -2100.91\]. This negative intercept
+indicates that in the absence of weather-related issues, arrival delays
+might be significantly shorter, which aligns with the expectation that
+weather incidents cause an increase in delays.
+
+**Weather Count Coefficient:** The regression coefficient for
+`weather_ct` was estimated at 1041.97 with a standard error of 2.66, and
+a 95% credible interval of \[1036.73, 1047.15\]. This result
+demonstrates a substantial effect of weather-related incidents on
+arrival delays. An increase in weather-related incidents by one unit
+correlates with an estimated increase in arrival delay by approximately
+1042 minutes on average. Despite the relatively smaller number of delays
+attributed to weather, this strong coefficient suggests that when
+weather incidents do occur, they tend to cause significant disruptions
+in arrival schedules.
+
+**Uncertainty Measures:** The estimated standard deviation of the
+model's residuals (\$sigma\$) is 8676.19, indicating variability in the
+observed arrival delays beyond the effects of the weather count
+variable. This could be due to other unmeasured factors affecting delays
+or the inherent randomness in arrival times.
+
+The convergence diagnostic measures for each parameter (\$Rhat\$) were
+equal to 1.00, indicating successful convergence of the model using the
+No-U-Turn Sampler (NUTS). Effective sample sizes for each parameter were
+also large, suggesting that the posterior estimates are reliable and
+well-sampled.
+
+## Interpretation
+
+The model suggests a robust and statistically significant relationship
+between weather-related incidents and arrival delays. Despite being less
+frequent compared to other causes, weather incidents lead to much larger
+disruptions when they occur. This highlights how important weather is
+when it comes to managing airline schedules and reducing arrival delays.
+
 # **Conclusion**
+
+This Bayesian linear regression analysis highlights the substantial
+impact of weather-related incidents on flight arrival delays. Even
+though weather incidents are less frequent compared to other causes of
+delays, the results show that their effect size is considerably larger.
+This suggests that while airlines may prioritize addressing common
+delays caused by carrier and NAS-related issues, special attention must
+be given to weather management and forecasting, given its
+disproportionately large impact on delay times.
+
+Using a Bayesian approach allows us to effectively account for
+uncertainty, giving us credible intervals for all the parameter
+estimates. This offers a deeper insight into how weather-related
+incidents affect arrival delays. With this probabilistic framework, we
+can make more informed decisions, especially when it comes to allocating
+resources and creating policies that aim to reduce disruptions in
+airline operations.
 
 # References
