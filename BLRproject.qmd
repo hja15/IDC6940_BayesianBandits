@@ -449,6 +449,138 @@ ggplot(delay_reasons_long, aes(x = Reason, y = Count, fill = Reason)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+## **Defining the Model**
+
+### The Bayesian Linear Regression Model
+
+The model can be written as
+
+$$  
+\begin{align*}
+Y_i|\beta_0, \beta_1, \sigma &\overset{\text{ind}}{\sim} N (\mu_i, \sigma^2) && \text{with } && \mu_i = \beta_0 + \beta_1X_i \\ 
+\beta_{0} &\sim N(m_0, s_0^2)\\
+\beta_1 &\sim N(m_1, s_1^2)\\
+\sigma &\sim \text{Exp}(l)
+\end{align*}
+$$
+
+### Model Specification
+
+Let: $$
+Y_i | \beta_0, \beta_1, \sigma \sim \text{N}(\mu_i, \sigma^2)
+$$ with $$
+\mu_i = \beta_0 + \beta_1 \cdot X_i
+$$
+
+where:
+
+-   $Y_i$ represents the **arrival delay** (in minutes) for the ( i )-th
+    flight.
+-   $X_i$ represents the **number of weather-related delay incidents**
+    (weather count) for the ( i )-th flight.
+-   $\mu_i = \beta_0 + \beta_1 X_i$ is the **expected (mean) arrival
+    delay**, which depends on the number of weather incidents for each
+    flight.
+-   $\sigma^2$ is the **variance of the errors**, capturing the
+    variability in arrival delays beyond what is explained by weather
+    incidents.
+-   $(\sim \text{ind})$ indicates **conditional independence** of each
+    arrival delay given the parameters $\beta_0$, $\beta_1$, and
+    $\sigma$.
+
+This model specification allows us to assess the relationship between
+weather-related incidents and arrival delays by estimating the effect of
+weather on delays through the parameter $\beta_1$. The model assumes
+that each flight’s delay is conditionally independent, given the model
+parameters, which means that the delay of one flight does not depend on
+another once we account for weather-related factors.
+
+### Prior Selection
+
+**Regression Parameters**
+
+-   **Intercept**: The prior for the intercept $\beta_0$ is specified as
+    a normal distribution: $$
+    \beta_0 \sim \text{N}(m_0, s_0^2)
+    $$
+
+-   **Slope**: The prior for the slope $\beta_1$, representing the
+    effect of weather incidents on arrival delays, is also specified as
+    a normal distribution: $$
+    \beta_1 \sim \text{N}(m_1, s_1^2)
+    $$
+
+-   **Error**: The prior for the error term $\sigma$ is specified as an
+    exponential distribution: $$
+    \sigma \sim \text{Exp}(l)
+    $$
+
+In this setup: - $( m_0 )$ and $(m_1)$ are the means for the intercept
+and slope priors, reflecting initial beliefs about their central
+values. - $( s_0^2 )$ and $( s_1^2 )$ are the variances for the
+intercept and slope priors, allowing flexibility in the range of
+plausible values for each parameter. - $( l )$ is the rate parameter for
+the exponential prior on the error term $( \sigma )$, which controls the
+expected variability in arrival delays beyond the effect of weather
+incidents.
+
+These priors were chosen to be relatively non-informative, allowing the
+data to inform the posterior estimates while still incorporating
+baseline expectations.
+
+### Tuning Hyperparameters
+
+The priors for the model parameters were tuned as follows:
+
+$$
+\begin{align*}
+\beta_0 &\sim N(0, 5^2) \\
+\beta_1 &\sim N(0, 5^2) \\
+\sigma &\sim \text{Exp}(1)
+\end{align*}
+$$
+
+These values were chosen to represent relatively non-informative priors,
+allowing the data to primarily guide the posterior estimates.
+
+-   The prior for the **intercept** $( \beta_0 )$ is a normal
+    distribution with a mean of $0$ and variance of $( 5^2 )$,
+    reflecting an initial belief centered around no significant baseline
+    effect.
+-   The prior for the **slope** $( \beta_1 )$ is also a normal
+    distribution with a mean of $0$ and variance of $(5^2)$,
+    representing no strong prior belief about the relationship between
+    weather incidents and arrival delays.
+-   The prior for the **error term** $( \sigma )$ is an exponential
+    distribution with a rate parameter of $1$, implying a positive
+    variance with more flexibility for higher variability.
+
+### The Updated Model
+
+The Bayesian linear regression model is updated with the following
+parameter specifications:
+
+$$  
+\begin{align*}
+Y_i | \beta_0, \beta_1, \sigma &\overset{\text{ind}}{\sim} N (\mu_i, \sigma^2) \quad \text{with} \quad \mu_i = \beta_0 + \beta_1 X_i \\ 
+\beta_0 &\sim N(0, 5^2) \\
+\beta_1 &\sim N(0, 5^2) \\
+\sigma &\sim \text{Exp}(1)
+\end{align*}
+$$
+
+Where: - $( Y_i )$ represents the **arrival delay** (in minutes) for the
+( i )-th flight. - $( X_i )$ represents the **number of weather-related
+delay incidents** for the ( i )-th flight. - $( \mu_i )$ is the
+**expected (mean) arrival delay**, modeled as a linear function of
+weather incidents. - $( \beta_0 )$, $( \beta_1 )$, and $( \sigma )$ are
+parameters estimated through the Bayesian model, with priors specified
+above.
+
+This updated model formulation allows us to understand the influence of
+weather-related incidents on arrival delays while incorporating prior
+beliefs and accounting for uncertainty in the parameter estimates.
+
 ## **Running the Model**
 
 ```{r, warning=FALSE, echo=FALSE, message=FALSE}
@@ -478,6 +610,65 @@ single_predictor_model <- brm(
 # Summarize the model output
 summary(single_predictor_model)
 plot(single_predictor_model)
+
+```
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+# Load necessary libraries
+library(brms)
+
+# Assuming your model is named 'single_predictor_model'
+model_summary <- summary(single_predictor_model)
+
+# Extract effective sample sizes
+bulk_ess <- model_summary$fixed$Bulk_ESS
+tail_ess <- model_summary$fixed$Tail_ESS
+
+# Calculate statistics from posterior samples
+posterior_samples <- as.data.frame(posterior_samples(single_predictor_model))
+mean_delay <- mean(posterior_samples$`b_weather_ct`)
+median_delay <- median(posterior_samples$`b_weather_ct`)
+sd_delay <- sd(posterior_samples$`b_weather_ct`)
+credible_interval <- quantile(posterior_samples$`b_weather_ct`, probs = c(0.025, 0.975))
+
+# Print the results
+cat("Effective Sample Size (Bulk):", bulk_ess, "\n")
+cat("Effective Sample Size (Tail):", tail_ess, "\n")
+cat("Mean Arrival Delay (minutes):", mean_delay, "\n")
+cat("Median Arrival Delay (minutes):", median_delay, "\n")
+cat("Standard Deviation of Arrival Delay:", sd_delay, "\n")
+cat("95% Credible Interval for Mean Arrival Delay:", credible_interval, "\n")
+
+```
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+# Generate posterior predictive samples for a random subset of observations
+set.seed(123)
+sample_indices <- sample(1:nrow(AirlineDelays1), size = 5000)  # Adjust the sample size as needed
+posterior_predictive <- posterior_predict(single_predictor_model, newdata = AirlineDelays1[sample_indices, ])
+
+# Extract the observed arrival delays for the sampled subset
+observed_arrival_delays <- AirlineDelays1$arr_delay[sample_indices]
+
+# Calculate the mean predicted delay for each observation in the subset
+mean_predicted_delays <- apply(posterior_predictive, 2, mean)
+
+# Create a data frame for plotting
+ppc_data <- data.frame(
+  Type = c(rep("Observed", length(observed_arrival_delays)), rep("Predicted", length(mean_predicted_delays))),
+  Arrival_Delay = c(observed_arrival_delays, mean_predicted_delays)
+)
+
+# Plot with log-transformed x-axis
+ggplot(ppc_data, aes(x = Arrival_Delay, fill = Type)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Posterior Predictive Check: Observed vs. Predicted Arrival Delays",
+       x = "Arrival Delays (minutes, log scale)",
+       y = "Density") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Observed" = "lightgray", "Predicted" = "blue")) +
+  scale_x_log10()
+
 
 ```
 
@@ -642,27 +833,27 @@ in the data.
 ## Table 3: Model Parameters and Estimates
 
 | **Parameter** | **Estimate** | **Standard Error** | **95% Credible Interval** |
-|-----------------|-----------------|-----------------|----------------------|
+|----------------|----------------|-----------------|-----------------------|
 | Intercept     | -2116.53     | 7.67               | \[-2131.41, -2100.91\]    |
 | Weather Count | 1041.97      | 2.66               | \[1036.73, 1047.15\]      |
 | Sigma         | 8676.19      | 15.52              | \[8646.95, 8706.92\]      |
 
 ## Table 4: Model Diagnostics and Fit Statistics
 
-| **Statistic**                                | **Value**                |
-|----------------------------------------------|--------------------------|
-| Number of Observations                       | 171,426                  |
-| Model Family                                 | Gaussian                 |
-| Formula                                      | `arr_delay ~ weather_ct` |
-| Iterations                                   | 2000                     |
-| Warmup                                       | 1000                     |
-| Chains                                       | 4                        |
-| Effective Sample Size (Bulk)                 |                          |
-| Effective Sample Size (Tail)                 |                          |
-| Mean Arrival Delay (minutes)                 |                          |
-| Median Arrival Delay (minutes)               |                          |
-| Standard Deviation of Arrival Delay          |                          |
-| 95% Credible Interval for Mean Arrival Delay |                          |
+| **Statistic**                                                 | **Value**                |
+|-----------------------------------------------|------------------------|
+| **Number of Observations**                                    | 171,426                  |
+| **Model Family**                                              | Gaussian                 |
+| **Formula**                                                   | `arr_delay ~ weather_ct` |
+| **Iterations**                                                | 2000                     |
+| **Warmup**                                                    | 1000                     |
+| **Chains**                                                    | 4                        |
+| **Effective Sample Size (Bulk) \[Intercept, Weather Count\]** | \[2102.722, 2000.139\]   |
+| **Effective Sample Size (Tail) \[Intercept, Weather Count\]** | \[2095.692, 1858.849\]   |
+| **Mean Arrival Delay (minutes)**                              | 1041.966                 |
+| **Median Arrival Delay (minutes)**                            | 1041.971                 |
+| **Standard Deviation of Arrival Delay**                       | 2.660956                 |
+| **95% Credible Interval for Mean Arrival Delay**              | \[1036.731, 1047.15\]    |
 
 ## Regression Line Plot
 
@@ -695,6 +886,20 @@ ggplot() +
   labs(title = "Bayesian Regression: Arrival Delays vs. Weather Incidents",
        x = "Number of Weather Incidents",
        y = "Arrival Delays (minutes)") +
+  theme_minimal()
+
+```
+
+## Posterior Distribution of Weather Count Coefficient
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+# Density plot for the posterior distribution of weather count coefficient
+weather_posterior <- as.data.frame(posterior_samples(single_predictor_model))$b_weather_ct
+ggplot(data.frame(weather_posterior), aes(x = weather_posterior)) +
+  geom_density(fill = "lightblue") +
+  labs(title = "Posterior Distribution of Weather Count Coefficient",
+       x = "Weather Count Coefficient (Posterior)",
+       y = "Density") +
   theme_minimal()
 
 ```
