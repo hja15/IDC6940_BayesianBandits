@@ -4129,8 +4129,8 @@ make: *** [/opt/R/4.3.2/lib/R/etc/Makeconf:191: foo.o] Error 1
 
 SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 Chain 1: 
-Chain 1: Gradient evaluation took 0.000768 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.68 seconds.
+Chain 1: Gradient evaluation took 0.000744 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.44 seconds.
 Chain 1: Adjust your expectations accordingly!
 Chain 1: 
 Chain 1: 
@@ -4147,15 +4147,15 @@ Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 1: 
-Chain 1:  Elapsed Time: 11.263 seconds (Warm-up)
-Chain 1:                4.918 seconds (Sampling)
-Chain 1:                16.181 seconds (Total)
+Chain 1:  Elapsed Time: 10.955 seconds (Warm-up)
+Chain 1:                4.748 seconds (Sampling)
+Chain 1:                15.703 seconds (Total)
 Chain 1: 
 
 SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 Chain 2: 
-Chain 2: Gradient evaluation took 0.000805 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 8.05 seconds.
+Chain 2: Gradient evaluation took 0.000797 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 7.97 seconds.
 Chain 2: Adjust your expectations accordingly!
 Chain 2: 
 Chain 2: 
@@ -4172,15 +4172,15 @@ Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 2: 
-Chain 2:  Elapsed Time: 11.93 seconds (Warm-up)
-Chain 2:                5.264 seconds (Sampling)
-Chain 2:                17.194 seconds (Total)
+Chain 2:  Elapsed Time: 11.551 seconds (Warm-up)
+Chain 2:                5.095 seconds (Sampling)
+Chain 2:                16.646 seconds (Total)
 Chain 2: 
 
 SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 Chain 3: 
-Chain 3: Gradient evaluation took 0.000777 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 7.77 seconds.
+Chain 3: Gradient evaluation took 0.000797 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 7.97 seconds.
 Chain 3: Adjust your expectations accordingly!
 Chain 3: 
 Chain 3: 
@@ -4197,15 +4197,15 @@ Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 3: 
-Chain 3:  Elapsed Time: 15.694 seconds (Warm-up)
-Chain 3:                5.991 seconds (Sampling)
-Chain 3:                21.685 seconds (Total)
+Chain 3:  Elapsed Time: 15.189 seconds (Warm-up)
+Chain 3:                5.789 seconds (Sampling)
+Chain 3:                20.978 seconds (Total)
 Chain 3: 
 
 SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 Chain 4: 
-Chain 4: Gradient evaluation took 0.000804 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 8.04 seconds.
+Chain 4: Gradient evaluation took 0.000738 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 7.38 seconds.
 Chain 4: Adjust your expectations accordingly!
 Chain 4: 
 Chain 4: 
@@ -4222,9 +4222,9 @@ Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 4: 
-Chain 4:  Elapsed Time: 11.241 seconds (Warm-up)
-Chain 4:                6.368 seconds (Sampling)
-Chain 4:                17.609 seconds (Total)
+Chain 4:  Elapsed Time: 10.911 seconds (Warm-up)
+Chain 4:                6.157 seconds (Sampling)
+Chain 4:                17.068 seconds (Total)
 Chain 4: </code></pre>
 </div>
 </div>
@@ -4663,8 +4663,8 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h2 class="anchored" data-anchor-id="key-findings"><strong>Key Findings</strong></h2>
 <p><strong>Intercept:</strong> The estimated intercept value is -2116.53 with a 95% credible interval of [-2131.41, -2100.91]. This negative intercept indicates that in the absence of weather-related issues, arrival delays might be significantly shorter, which aligns with the expectation that weather incidents cause an increase in delays.</p>
 <p><strong>Weather Count Coefficient:</strong> The regression coefficient for <code>weather_ct</code> was estimated at 1041.97 with a standard error of 2.66, and a 95% credible interval of [1036.73, 1047.15]. This result demonstrates a substantial effect of weather-related incidents on arrival delays. An increase in weather-related incidents by one unit correlates with an estimated increase in arrival delay by approximately 1042 minutes on average. Despite the relatively smaller number of delays attributed to weather, this strong coefficient suggests that when weather incidents do occur, they tend to cause significant disruptions in arrival schedules.</p>
-<p><strong>Uncertainty Measures:</strong> The estimated standard deviation of the model’s residuals ($sigma$) is 8676.19, indicating variability in the observed arrival delays beyond the effects of the weather count variable. This could be due to other unmeasured factors affecting delays or the inherent randomness in arrival times.</p>
-<p>The convergence diagnostic measures for each parameter ($Rhat$) were equal to 1.00, indicating successful convergence of the model using the No-U-Turn Sampler (NUTS). Effective sample sizes for each parameter were also large, suggesting that the posterior estimates are reliable and well-sampled.</p>
+<p><strong>Uncertainty Measures:</strong> The estimated standard deviation of the model’s residuals <span class="math inline">\((\sigma)\)</span> is 8676.19, indicating variability in the observed arrival delays beyond the effects of the weather count variable. This could be due to other unmeasured factors affecting delays or the inherent randomness in arrival times.</p>
+<p>The convergence diagnostic measures for each parameter <span class="math inline">\((\hat{R})\)</span> were equal to 1.00, indicating successful convergence of the model using the No-U-Turn Sampler (NUTS). Effective sample sizes for each parameter were also large, suggesting that the posterior estimates are reliable and well-sampled.</p>
 </section>
 <section id="interpretation" class="level2">
 <h2 class="anchored" data-anchor-id="interpretation"><strong>Interpretation</strong></h2>

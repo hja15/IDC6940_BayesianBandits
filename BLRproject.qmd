@@ -998,12 +998,12 @@ weather incidents do occur, they tend to cause significant disruptions
 in arrival schedules.
 
 **Uncertainty Measures:** The estimated standard deviation of the
-model's residuals (\$sigma\$) is 8676.19, indicating variability in the
+model's residuals $(\sigma)$ is 8676.19, indicating variability in the
 observed arrival delays beyond the effects of the weather count
 variable. This could be due to other unmeasured factors affecting delays
 or the inherent randomness in arrival times.
 
-The convergence diagnostic measures for each parameter (\$Rhat\$) were
+The convergence diagnostic measures for each parameter $(\hat{R})$ were
 equal to 1.00, indicating successful convergence of the model using the
 No-U-Turn Sampler (NUTS). Effective sample sizes for each parameter were
 also large, suggesting that the posterior estimates are reliable and
