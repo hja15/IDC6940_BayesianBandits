@@ -833,7 +833,7 @@ in the data.
 ## Table 3: Model Parameters and Estimates
 
 | **Parameter** | **Estimate** | **Standard Error** | **95% Credible Interval** |
-|----------------|----------------|-----------------|-----------------------|
+|---------------|--------------|--------------------|---------------------------|
 | Intercept     | -2116.53     | 7.67               | \[-2131.41, -2100.91\]    |
 | Weather Count | 1041.97      | 2.66               | \[1036.73, 1047.15\]      |
 | Sigma         | 8676.19      | 15.52              | \[8646.95, 8706.92\]      |
@@ -841,7 +841,7 @@ in the data.
 ## Table 4: Model Diagnostics and Fit Statistics
 
 | **Statistic**                                                 | **Value**                |
-|-----------------------------------------------|------------------------|
+|---------------------------------------------------------------|--------------------------|
 | **Number of Observations**                                    | 171,426                  |
 | **Model Family**                                              | Gaussian                 |
 | **Formula**                                                   | `arr_delay ~ weather_ct` |
@@ -901,6 +901,24 @@ ggplot(data.frame(weather_posterior), aes(x = weather_posterior)) +
        x = "Weather Count Coefficient (Posterior)",
        y = "Density") +
   theme_minimal()
+
+```
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+
+# Load the dataset (replace the file path if needed)
+AirlineDelays <- read.csv("Airline_Delay_Cause.csv")
+
+# Show the first few rows of the dataset, especially `weather_ct`
+head(AirlineDelays$weather_ct)
+
+# Check the structure of the `weather_ct` variable
+str(AirlineDelays$weather_ct)
+
+# Get summary statistics for `weather_ct`
+summary(AirlineDelays$weather_ct)
 
 ```
 
