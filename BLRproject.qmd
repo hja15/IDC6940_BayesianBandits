@@ -119,7 +119,7 @@ The dataset used in this project comes from the following link:
 
 <https://www.kaggle.com/datasets/sriharshaeedala/airline-delay?resource=download>
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
+```{r}
 library(dplyr)
 library(knitr)
 library(ggplot2)
@@ -127,7 +127,7 @@ library(tidyr)
 library(bayesrules)
 ```
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
+```{r}
 AirlineDelays <- read.csv("Airline_Delay_Cause.csv")
 head(AirlineDelays)
 
@@ -213,7 +213,7 @@ print(total_arrived_flights_corrected)
 
 ### Table 1: Summary of Flight Arrivals, Delays, Cancellations, and Diversions
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
+```{r}
 # Summarize the dataset by carrier
 carrier_summary <- AirlineDelays %>%
   group_by(carrier) %>%
@@ -319,7 +319,7 @@ the month appears to have been fairly stable for airline operations.
 
 ### Table 2: Flight Summary by Airline
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
+```{r}
 # Summarize the dataset by carrier
 summary_by_airline <- AirlineDelays %>%
   group_by(carrier, carrier_name) %>%
@@ -349,7 +349,7 @@ kable(table1, caption = "Table 2: Flight Summary by Airline (August 2023)",
 
 ### Flight Status Proportions by Airline
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
+```{r}
 # Summarize the dataset by carrier
 summary_by_airline <- AirlineDelays %>%
   group_by(carrier, carrier_name) %>%
@@ -388,7 +388,7 @@ ggplot(summary_long, aes(x = reorder(carrier_name, -Proportion), y = Proportion,
 
 ### Proportion of Flight Status
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
+```{r}
 # Summarize the dataset by carrier
 summary_by_airline <- AirlineDelays %>%
   group_by(carrier, carrier_name) %>%
@@ -423,7 +423,7 @@ ggplot(total_counts, aes(x = "", y = Count, fill = Flight_Status)) +
 
 ### Reasons for Flight Delays
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
+```{r}
 # Summarize reasons for delays
 delay_reasons <- AirlineDelays %>%
   summarise(
@@ -448,6 +448,25 @@ ggplot(delay_reasons_long, aes(x = Reason, y = Count, fill = Reason)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+
+## **Steps in Bayesian Linear Regression**
+
+1.  **Model Specification**: Define the linear relationship between the
+    dependent and independent variables.
+
+2.  **Choose Priors**: Select prior distributions for the model
+    parameters, reflecting any existing knowledge about their values.
+
+3.  **Data Collection**: Gather relevant data for the variables in the
+    model.
+
+4.  **Model Fitting**: Use computational methods, such as Markov Chain
+    Monte Carlo (MCMC), to estimate the posterior distributions of the
+    parameters based on the observed data.
+
+5.  **Result Interpretation**: Analyze the posterior distributions to
+    understand the relationships between variables, including estimating
+    means and credible intervals.
 
 ## **Defining the Model**
 
@@ -583,7 +602,9 @@ beliefs and accounting for uncertainty in the parameter estimates.
 
 ## **Running the Model**
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
+### Output
+
+```{r}
 # Load necessary packages
 library(brms)
 
@@ -607,69 +628,14 @@ single_predictor_model <- brm(
   seed = 123
 )
 
+
+```
+
+### Summary of Model Output
+
+```{r}
 # Summarize the model output
 summary(single_predictor_model)
-plot(single_predictor_model)
-
-```
-
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
-# Load necessary libraries
-library(brms)
-
-# Assuming your model is named 'single_predictor_model'
-model_summary <- summary(single_predictor_model)
-
-# Extract effective sample sizes
-bulk_ess <- model_summary$fixed$Bulk_ESS
-tail_ess <- model_summary$fixed$Tail_ESS
-
-# Calculate statistics from posterior samples
-posterior_samples <- as.data.frame(posterior_samples(single_predictor_model))
-mean_delay <- mean(posterior_samples$`b_weather_ct`)
-median_delay <- median(posterior_samples$`b_weather_ct`)
-sd_delay <- sd(posterior_samples$`b_weather_ct`)
-credible_interval <- quantile(posterior_samples$`b_weather_ct`, probs = c(0.025, 0.975))
-
-# Print the results
-cat("Effective Sample Size (Bulk):", bulk_ess, "\n")
-cat("Effective Sample Size (Tail):", tail_ess, "\n")
-cat("Mean Arrival Delay (minutes):", mean_delay, "\n")
-cat("Median Arrival Delay (minutes):", median_delay, "\n")
-cat("Standard Deviation of Arrival Delay:", sd_delay, "\n")
-cat("95% Credible Interval for Mean Arrival Delay:", credible_interval, "\n")
-
-```
-
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
-# Generate posterior predictive samples for a random subset of observations
-set.seed(123)
-sample_indices <- sample(1:nrow(AirlineDelays1), size = 5000)  # Adjust the sample size as needed
-posterior_predictive <- posterior_predict(single_predictor_model, newdata = AirlineDelays1[sample_indices, ])
-
-# Extract the observed arrival delays for the sampled subset
-observed_arrival_delays <- AirlineDelays1$arr_delay[sample_indices]
-
-# Calculate the mean predicted delay for each observation in the subset
-mean_predicted_delays <- apply(posterior_predictive, 2, mean)
-
-# Create a data frame for plotting
-ppc_data <- data.frame(
-  Type = c(rep("Observed", length(observed_arrival_delays)), rep("Predicted", length(mean_predicted_delays))),
-  Arrival_Delay = c(observed_arrival_delays, mean_predicted_delays)
-)
-
-# Plot with log-transformed x-axis
-ggplot(ppc_data, aes(x = Arrival_Delay, fill = Type)) +
-  geom_density(alpha = 0.5) +
-  labs(title = "Posterior Predictive Check: Observed vs. Predicted Arrival Delays",
-       x = "Arrival Delays (minutes, log scale)",
-       y = "Density") +
-  theme_minimal() +
-  scale_fill_manual(values = c("Observed" = "lightgray", "Predicted" = "blue")) +
-  scale_x_log10()
-
-
 ```
 
 ## **Data Preparation**
@@ -724,24 +690,35 @@ uncertainty inherent in the data.
     the likelihood of the data given those parameters \\( P(\\text{data}
     \| \\beta) \\).
 
-### Steps in Bayesian Linear Regression
+## **Model Fitting**
 
-1.  **Model Specification**: Define the linear relationship between the
-    dependent and independent variables.
+The Bayesian model was fitted using Markov Chain Monte Carlo (MCMC)
+methods, with the following parameters:
 
-2.  **Choose Priors**: Select prior distributions for the model
-    parameters, reflecting any existing knowledge about their values.
+-   **Chains**: 4
 
-3.  **Data Collection**: Gather relevant data for the variables in the
-    model.
+-   **Iterations**: 2000
 
-4.  **Model Fitting**: Use computational methods, such as Markov Chain
-    Monte Carlo (MCMC), to estimate the posterior distributions of the
-    parameters based on the observed data.
+-   **Warmup**: 1000
 
-5.  **Result Interpretation**: Analyze the posterior distributions to
-    understand the relationships between variables, including estimating
-    means and credible intervals.
+These settings were chosen to ensure adequate convergence and to provide
+a stable estimate of the posterior distribution.
+
+## **Prior Distributions**
+
+Prior distributions for the model coefficients were specified as normal
+distributions with a mean of 0 and a standard deviation of 5, reflecting
+a relatively uninformative prior that allows the data to inform the
+posterior distributions.
+
+## **Model Assessment**
+
+Model diagnostics were conducted to evaluate convergence and the quality
+of the fitted model. The summary of the model output, along with trace
+plots, was examined to ensure that the MCMC chains had stabilized and
+adequately explored the parameter space.
+
+## **Why Bayesian?**
 
 ### Advantages of Bayesian Linear Regression
 
@@ -782,41 +759,7 @@ uncertainty inherent in the data.
     *-Handles model complexity effectively, expanding analytical
     possibilities.*
 
-### Conclusion
-
-Bayesian Linear Regression offers a comprehensive framework for
-analyzing the factors influencing flight delays, making it an invaluable
-tool for understanding complex interactions in the aviation industry.
-
-## **Model Fitting**
-
-The Bayesian model was fitted using Markov Chain Monte Carlo (MCMC)
-methods, with the following parameters:
-
--   **Chains**: 4
-
--   **Iterations**: 2000
-
--   **Warmup**: 1000
-
-These settings were chosen to ensure adequate convergence and to provide
-a stable estimate of the posterior distribution.
-
-## **Prior Distributions**
-
-Prior distributions for the model coefficients were specified as normal
-distributions with a mean of 0 and a standard deviation of 5, reflecting
-a relatively uninformative prior that allows the data to inform the
-posterior distributions.
-
-## **Model Assessment**
-
-Model diagnostics were conducted to evaluate convergence and the quality
-of the fitted model. The summary of the model output, along with trace
-plots, was examined to ensure that the MCMC chains had stabilized and
-adequately explored the parameter space.
-
-## **Why Bayesian?**
+### Summary
 
 Bayesian methods have some great advantages that make them a good fit
 for this analysis. They allow us to bring in prior knowledge, making the
@@ -830,18 +773,87 @@ in the data.
 
 # **Analysis and Results**
 
-## Table 3: Model Parameters and Estimates
+## **Trace Plots and Posterior Distributions**
+
+```{r}
+plot(single_predictor_model)
+```
+
+### Interpretation of Each Component
+
+Below, we interpret the trace plots and posterior distributions for the
+parameters in our Bayesian model. These plots were generated to assess
+the convergence and distribution of each parameter in the model.
+
+**Posterior Distributions**
+
+On the left side of the image, we see the posterior distributions of the
+following parameters: - **`b_Intercept`**: The intercept term, centered
+around -2120. - **`b_weather_ct`**: The effect of weather counts on
+arrival delay, centered around 1040. - **`sigma`**: The residual
+standard deviation, centered around 8700.
+
+These histograms represent the estimated range of values for each
+parameter after sampling, helping us understand the most likely values.
+
+**Trace Plots**
+
+On the right side, the trace plots show the sampled values of each
+parameter across four chains: - **X-axis**: Represents the iteration
+steps. - **Y-axis**: Represents the parameter values for each iteration.
+
+Each color corresponds to one of the four chains. The chains appear
+well-mixed, with no discernible patterns, suggesting convergence.
+
+**Convergence Check**
+
+To assess convergence, we can visually inspect these plots and check the
+$(\hat{R})$ values. Ideally, $(\hat{R})$ values close to 1 indicate good
+convergence across chains. While these trace plots suggest convergence,
+the actual $(\hat{R})$ values can be confirmed by examining the model's
+numerical summary. In our model, the $(\hat{R})$ value is exactly 1.00.
+
+## **Extracting Values**
+
+```{r}
+# Load necessary libraries
+library(brms)
+
+# Assuming your model is named 'single_predictor_model'
+model_summary <- summary(single_predictor_model)
+
+# Extract effective sample sizes
+bulk_ess <- model_summary$fixed$Bulk_ESS
+tail_ess <- model_summary$fixed$Tail_ESS
+
+# Calculate statistics from posterior samples
+posterior_samples <- as.data.frame(posterior_samples(single_predictor_model))
+mean_delay <- mean(posterior_samples$`b_weather_ct`)
+median_delay <- median(posterior_samples$`b_weather_ct`)
+sd_delay <- sd(posterior_samples$`b_weather_ct`)
+credible_interval <- quantile(posterior_samples$`b_weather_ct`, probs = c(0.025, 0.975))
+
+# Print the results
+cat("Effective Sample Size (Bulk):", bulk_ess, "\n")
+cat("Effective Sample Size (Tail):", tail_ess, "\n")
+cat("Mean Arrival Delay (minutes):", mean_delay, "\n")
+cat("Median Arrival Delay (minutes):", median_delay, "\n")
+cat("Standard Deviation of Arrival Delay:", sd_delay, "\n")
+cat("95% Credible Interval for Mean Arrival Delay:", credible_interval, "\n")
+```
+
+## **Table 3: Model Parameters and Estimates**
 
 | **Parameter** | **Estimate** | **Standard Error** | **95% Credible Interval** |
-|---------------|--------------|--------------------|---------------------------|
+|----------------|----------------|-----------------|-----------------------|
 | Intercept     | -2116.53     | 7.67               | \[-2131.41, -2100.91\]    |
 | Weather Count | 1041.97      | 2.66               | \[1036.73, 1047.15\]      |
 | Sigma         | 8676.19      | 15.52              | \[8646.95, 8706.92\]      |
 
-## Table 4: Model Diagnostics and Fit Statistics
+## **Table 4: Model Diagnostics and Fit Statistics**
 
 | **Statistic**                                                 | **Value**                |
-|---------------------------------------------------------------|--------------------------|
+|--------------------------------------------------|----------------------|
 | **Number of Observations**                                    | 171,426                  |
 | **Model Family**                                              | Gaussian                 |
 | **Formula**                                                   | `arr_delay ~ weather_ct` |
@@ -855,9 +867,42 @@ in the data.
 | **Standard Deviation of Arrival Delay**                       | 2.660956                 |
 | **95% Credible Interval for Mean Arrival Delay**              | \[1036.731, 1047.15\]    |
 
-## Regression Line Plot
+## **Posterior Predictive Check: Observed vs. Predicted Arrival Delays**
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
+```{r}
+# Generate posterior predictive samples for a random subset of observations
+set.seed(123)
+sample_indices <- sample(1:nrow(AirlineDelays1), size = 5000)  # Adjust the sample size as needed
+posterior_predictive <- posterior_predict(single_predictor_model, newdata = AirlineDelays1[sample_indices, ])
+
+# Extract the observed arrival delays for the sampled subset
+observed_arrival_delays <- AirlineDelays1$arr_delay[sample_indices]
+
+# Calculate the mean predicted delay for each observation in the subset
+mean_predicted_delays <- apply(posterior_predictive, 2, mean)
+
+# Create a data frame for plotting
+ppc_data <- data.frame(
+  Type = c(rep("Observed", length(observed_arrival_delays)), rep("Predicted", length(mean_predicted_delays))),
+  Arrival_Delay = c(observed_arrival_delays, mean_predicted_delays)
+)
+
+# Plot with log-transformed x-axis
+ggplot(ppc_data, aes(x = Arrival_Delay, fill = Type)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Posterior Predictive Check: Observed vs. Predicted Arrival Delays",
+       x = "Arrival Delays (minutes, log scale)",
+       y = "Density") +
+  theme_minimal() +
+  scale_fill_manual(values = c("Observed" = "lightgray", "Predicted" = "blue")) +
+  scale_x_log10()
+
+
+```
+
+## **Regression Line Plot**
+
+```{r}
 
 # Load necessary libraries
 library(ggplot2)
@@ -890,9 +935,9 @@ ggplot() +
 
 ```
 
-## Posterior Distribution of Weather Count Coefficient
+## **Posterior Distribution of Weather Count Coefficient**
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
+```{r}
 # Density plot for the posterior distribution of weather count coefficient
 weather_posterior <- as.data.frame(posterior_samples(single_predictor_model))$b_weather_ct
 ggplot(data.frame(weather_posterior), aes(x = weather_posterior)) +
@@ -904,7 +949,7 @@ ggplot(data.frame(weather_posterior), aes(x = weather_posterior)) +
 
 ```
 
-```{r}
+```{r, results = 'hide'}
 # Load necessary libraries
 library(dplyr)
 
@@ -922,7 +967,7 @@ summary(AirlineDelays$weather_ct)
 
 ```
 
-## Model Overview
+## **Model Overview**
 
 The Bayesian linear regression model aimed to assess the relationship
 between weather-related incidents (\`weather_ct\`) and arrival delays
@@ -933,7 +978,7 @@ output from the model indicates a significant positive relationship
 between the number of weather incidents and the length of arrival
 delays.
 
-## Key Findings
+## **Key Findings**
 
 **Intercept:** The estimated intercept value is -2116.53 with a 95%
 credible interval of \[-2131.41, -2100.91\]. This negative intercept
@@ -964,7 +1009,7 @@ No-U-Turn Sampler (NUTS). Effective sample sizes for each parameter were
 also large, suggesting that the posterior estimates are reliable and
 well-sampled.
 
-## Interpretation
+## **Interpretation**
 
 The model suggests a robust and statistically significant relationship
 between weather-related incidents and arrival delays. Despite being less
@@ -972,23 +1017,82 @@ frequent compared to other causes, weather incidents lead to much larger
 disruptions when they occur. This highlights how important weather is
 when it comes to managing airline schedules and reducing arrival delays.
 
+# **Discussion and Future Research**
+
+This Bayesian linear regression analysis provides valuable insights into
+how weather-related incidents affect flight arrival delays. The findings
+show a significant positive relationship between the number of weather
+incidents and the length of arrival delays, emphasizing that weather can
+lead to considerable disruptions. However, several aspects of this
+analysis could benefit from further refinement and expanded research.
+
+One major area for improvement is the inclusion of additional predictor
+variables. This analysis focused solely on weather-related incidents,
+but considering other factors, like carrier delays, NAS (National
+Airspace System) issues, or even socioeconomic variables, could give a
+fuller picture of what drives flight delays. It would also be useful to
+explore interactions between these factors, which might reveal more
+complex and interdependent relationships.
+
+Another key consideration is the dataset itself. This analysis used data
+from August 2023, but incorporating data from multiple months or years
+could help identify seasonal trends and longer-term patterns. Adding
+real-time data could also be valuable, allowing for insights into how
+delays change dynamically over time and providing more actionable
+information for decision-makers.
+
+In addition, the Bayesian linear regression model used in this analysis
+could be expanded to more sophisticated Bayesian models in future
+research. For instance, hierarchical models could account for variations
+between different airports or airlines, offering a more nuanced view of
+delays. Techniques like variational inference could also be explored to
+efficiently work with larger datasets and more complex models.
+
+Regarding outliers, it was assumed in this analysis that the outliers in
+arrival delays were valuable and informative rather than anomalies to be
+removed. This decision may have influenced the results, highlighting an
+area for future exploration. Future studies could look at using Bayesian
+methods specifically designed to manage outliers or incorporate
+domain-specific knowledge to better distinguish and handle extreme
+values. Conducting a comparison of results with and without outliers
+would provide clearer insights into their impact.
+
+There were also several assumptions made with respect to the key
+predictor variable, `weather_ct`. It was assumed that the reported count
+data was accurate and consistently measured across flights, that weather
+incidents affected delays independently of one another, and that the
+impact was consistent across different airports and times. Additionally,
+a linear relationship was assumed between `weather_ct` and arrival
+delays, which may oversimplify the actual dynamics. Addressing these
+assumptions in future research could enhance the validity of the
+results.
+
 # **Conclusion**
 
-This Bayesian linear regression analysis highlights the substantial
-impact of weather-related incidents on flight arrival delays. Even
-though weather incidents are less frequent compared to other causes of
-delays, the results show that their effect size is considerably larger.
-This suggests that while airlines may prioritize addressing common
-delays caused by carrier and NAS-related issues, special attention must
-be given to weather management and forecasting, given its
-disproportionately large impact on delay times.
+This Bayesian linear regression analysis highlights the significant
+impact of weather-related incidents on flight arrival delays. Although
+weather issues are less frequent than other delay causes, they have a
+disproportionately large effect on delay times. This finding suggests
+that special attention must be given to weather management and
+forecasting, alongside addressing other common delay factors such as
+carrier and NAS-related issues.
 
-Using a Bayesian approach allows us to effectively account for
-uncertainty, giving us credible intervals for all the parameter
-estimates. This offers a deeper insight into how weather-related
-incidents affect arrival delays. With this probabilistic framework, we
-can make more informed decisions, especially when it comes to allocating
-resources and creating policies that aim to reduce disruptions in
-airline operations.
+Using a Bayesian approach allows for effectively accounting for
+uncertainty, providing credible intervals for all parameter estimates
+and offering a deeper understanding of how weather-related incidents
+affect arrival delays. This probabilistic framework supports more
+informed decision-making, especially in resource allocation and
+policy-making aimed at reducing disruptions in airline operations.
+
+Bayesian linear regression serves as an effective tool for exploring
+complex relationships in the aviation industry, particularly regarding
+the impact of weather. By integrating prior knowledge and addressing
+uncertainty, this analysis provides insights that are both informative
+and practical. For future research, expanding the model to include
+additional variables, refining data sources, exploring advanced Bayesian
+models, and developing interactive visualizations are promising avenues.
+These directions have the potential to enhance the applicability of this
+work, contributing to more effective strategies for mitigating flight
+delays and improving airline efficiency.
 
 # References
