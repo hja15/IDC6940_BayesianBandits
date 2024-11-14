@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Heather Anderson (Advisor: Dr. Seals)">
-<meta name="dcterms.date" content="2024-11-13">
+<meta name="dcterms.date" content="2024-11-14">
 
 <title>Bayesian Linear Regression</title>
 <style>
@@ -3152,6 +3152,7 @@ window.Quarto = {
   <li><a href="#steps-in-bayesian-linear-regression" id="toc-steps-in-bayesian-linear-regression" class="nav-link" data-scroll-target="#steps-in-bayesian-linear-regression"><strong>Steps in Bayesian Linear Regression</strong></a></li>
   <li><a href="#defining-the-model" id="toc-defining-the-model" class="nav-link" data-scroll-target="#defining-the-model"><strong>Defining the Model</strong></a>
   <ul class="collapse">
+  <li><a href="#choosing-focus" id="toc-choosing-focus" class="nav-link" data-scroll-target="#choosing-focus">Choosing Focus</a></li>
   <li><a href="#the-bayesian-linear-regression-model" id="toc-the-bayesian-linear-regression-model" class="nav-link" data-scroll-target="#the-bayesian-linear-regression-model">The Bayesian Linear Regression Model</a></li>
   <li><a href="#model-specification" id="toc-model-specification" class="nav-link" data-scroll-target="#model-specification">Model Specification</a></li>
   <li><a href="#prior-selection" id="toc-prior-selection" class="nav-link" data-scroll-target="#prior-selection">Prior Selection</a></li>
@@ -3222,7 +3223,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 13, 2024</p>
+      <p class="date">November 14, 2024</p>
     </div>
   </div>
   
@@ -4005,6 +4006,10 @@ window.Quarto = {
 </section>
 <section id="defining-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="defining-the-model"><strong>Defining the Model</strong></h2>
+<section id="choosing-focus" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-focus">Choosing Focus</h3>
+<p>I chose to focus on weather delays because, even though they’re less common, they pose unique challenges that airlines can’t control. Unlike delays due to carrier or NAS issues, weather is unpredictable and can have a big impact on safety and scheduling. By analyzing weather’s effect on delays, I hoped to uncover patterns that might help airlines anticipate and better prepare for these types of disruptions, especially during certain seasons or in specific regions. This focus could lead to insights that improve the travel experience and help airlines handle weather-related delays more effectively.</p>
+</section>
 <section id="the-bayesian-linear-regression-model" class="level3">
 <h3 class="anchored" data-anchor-id="the-bayesian-linear-regression-model">The Bayesian Linear Regression Model</h3>
 <p>The model can be written as</p>
@@ -4129,8 +4134,8 @@ make: *** [/opt/R/4.3.2/lib/R/etc/Makeconf:191: foo.o] Error 1
 
 SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 1).
 Chain 1: 
-Chain 1: Gradient evaluation took 0.000744 seconds
-Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.44 seconds.
+Chain 1: Gradient evaluation took 0.000749 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.49 seconds.
 Chain 1: Adjust your expectations accordingly!
 Chain 1: 
 Chain 1: 
@@ -4147,15 +4152,15 @@ Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 1: 
-Chain 1:  Elapsed Time: 10.955 seconds (Warm-up)
-Chain 1:                4.748 seconds (Sampling)
-Chain 1:                15.703 seconds (Total)
+Chain 1:  Elapsed Time: 10.71 seconds (Warm-up)
+Chain 1:                4.723 seconds (Sampling)
+Chain 1:                15.433 seconds (Total)
 Chain 1: 
 
 SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 2).
 Chain 2: 
-Chain 2: Gradient evaluation took 0.000797 seconds
-Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 7.97 seconds.
+Chain 2: Gradient evaluation took 0.000779 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 7.79 seconds.
 Chain 2: Adjust your expectations accordingly!
 Chain 2: 
 Chain 2: 
@@ -4172,15 +4177,15 @@ Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 2: 
-Chain 2:  Elapsed Time: 11.551 seconds (Warm-up)
-Chain 2:                5.095 seconds (Sampling)
-Chain 2:                16.646 seconds (Total)
+Chain 2:  Elapsed Time: 11.609 seconds (Warm-up)
+Chain 2:                5.15 seconds (Sampling)
+Chain 2:                16.759 seconds (Total)
 Chain 2: 
 
 SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 3).
 Chain 3: 
-Chain 3: Gradient evaluation took 0.000797 seconds
-Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 7.97 seconds.
+Chain 3: Gradient evaluation took 0.000776 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 7.76 seconds.
 Chain 3: Adjust your expectations accordingly!
 Chain 3: 
 Chain 3: 
@@ -4197,15 +4202,15 @@ Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 3: 
-Chain 3:  Elapsed Time: 15.189 seconds (Warm-up)
-Chain 3:                5.789 seconds (Sampling)
-Chain 3:                20.978 seconds (Total)
+Chain 3:  Elapsed Time: 15.239 seconds (Warm-up)
+Chain 3:                5.837 seconds (Sampling)
+Chain 3:                21.076 seconds (Total)
 Chain 3: 
 
 SAMPLING FOR MODEL &#39;anon_model&#39; NOW (CHAIN 4).
 Chain 4: 
-Chain 4: Gradient evaluation took 0.000738 seconds
-Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 7.38 seconds.
+Chain 4: Gradient evaluation took 0.000841 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 8.41 seconds.
 Chain 4: Adjust your expectations accordingly!
 Chain 4: 
 Chain 4: 
@@ -4222,9 +4227,9 @@ Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
 Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 Chain 4: 
-Chain 4:  Elapsed Time: 10.911 seconds (Warm-up)
-Chain 4:                6.157 seconds (Sampling)
-Chain 4:                17.068 seconds (Total)
+Chain 4:  Elapsed Time: 10.843 seconds (Warm-up)
+Chain 4:                5.403 seconds (Sampling)
+Chain 4:                16.246 seconds (Total)
 Chain 4: </code></pre>
 </div>
 </div>
@@ -4429,10 +4434,10 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h2 class="anchored" data-anchor-id="table-3-model-parameters-and-estimates"><strong>Table 3: Model Parameters and Estimates</strong></h2>
 <table class="table">
 <colgroup>
-<col style="width: 22%">
-<col style="width: 22%">
 <col style="width: 23%">
-<col style="width: 31%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 30%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -4468,8 +4473,8 @@ scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
 <h2 class="anchored" data-anchor-id="table-4-model-diagnostics-and-fit-statistics"><strong>Table 4: Model Diagnostics and Fit Statistics</strong></h2>
 <table class="table">
 <colgroup>
-<col style="width: 69%">
-<col style="width: 30%">
+<col style="width: 68%">
+<col style="width: 31%">
 </colgroup>
 <thead>
 <tr class="header">

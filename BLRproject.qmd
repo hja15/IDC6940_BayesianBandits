@@ -470,6 +470,18 @@ ggplot(delay_reasons_long, aes(x = Reason, y = Count, fill = Reason)) +
 
 ## **Defining the Model**
 
+### Choosing Focus
+
+I chose to focus on weather delays because, even though they’re less
+common, they pose unique challenges that airlines can’t control. Unlike
+delays due to carrier or NAS issues, weather is unpredictable and can
+have a big impact on safety and scheduling. By analyzing weather’s
+effect on delays, I hoped to uncover patterns that might help airlines
+anticipate and better prepare for these types of disruptions, especially
+during certain seasons or in specific regions. This focus could lead to
+insights that improve the travel experience and help airlines handle
+weather-related delays more effectively.
+
 ### The Bayesian Linear Regression Model
 
 The model can be written as
@@ -845,7 +857,7 @@ cat("95% Credible Interval for Mean Arrival Delay:", credible_interval, "\n")
 ## **Table 3: Model Parameters and Estimates**
 
 | **Parameter** | **Estimate** | **Standard Error** | **95% Credible Interval** |
-|----------------|----------------|-----------------|-----------------------|
+|-----------------|-----------------|-----------------|----------------------|
 | Intercept     | -2116.53     | 7.67               | \[-2131.41, -2100.91\]    |
 | Weather Count | 1041.97      | 2.66               | \[1036.73, 1047.15\]      |
 | Sigma         | 8676.19      | 15.52              | \[8646.95, 8706.92\]      |
@@ -853,7 +865,7 @@ cat("95% Credible Interval for Mean Arrival Delay:", credible_interval, "\n")
 ## **Table 4: Model Diagnostics and Fit Statistics**
 
 | **Statistic**                                                 | **Value**                |
-|--------------------------------------------------|----------------------|
+|-------------------------------------------------|-----------------------|
 | **Number of Observations**                                    | 171,426                  |
 | **Model Family**                                              | Gaussian                 |
 | **Formula**                                                   | `arr_delay ~ weather_ct` |
