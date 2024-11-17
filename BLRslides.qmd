@@ -1,0 +1,251 @@
+---
+title: "Bayesian Linear Regression"
+subtitle: "Analysis of Flight Delay Data"
+author: "Sara Parrish, Heather Anderson (Advisor: Dr. Seals)"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+date-format: "MMM D, YYYY"
+format:
+  revealjs:
+    css: custom.css
+    theme: dark
+    embed-resources: true
+    slide-number: false
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+course: Capstone Projects in Data Science
+bibliography: references.bib
+csl: ieee.csl
+self-contained: true
+execute: 
+  warning: false
+  message: false
+editor: 
+  markdown: 
+    wrap: 72
+pdf-separate-fragments: true
+fig-align: center
+---
+
+# **Introduction**
+
+## Objectives
+
+-   **Introduce Bayesian Linear Regression (BLR)**: Understand its
+    principles and how it differs from traditional methods.
+
+-   **Explain Bayesian Concepts**: Highlight Bayes’ Theorem, prior
+    knowledge, and posterior distributions.
+
+-   **Discuss Practical Applications**: Show how BLR is applied in
+    analyzing real-world data, like airline delays.
+
+-   **Explore Advantages of Bayesian Methods**: Quantifying uncertainty,
+    improving predictions, and handling complex data.
+
+-   **Present Analysis Findings**: Summarize key insights from our BLR
+    model on weather-related airline delays.
+
+## What is Bayesian Linear Regression?
+
+-   **BLR**: A statistical approach combining **prior knowledge** and
+    **new data**.
+
+-   **Goal**: Model relationships, make predictions, and handle
+    **uncertainty** in estimates.
+
+-   **Difference from Traditional Methods**: Probability-based estimates
+    instead of fixed values.
+
+    ![](statsmemecat.jpg)
+
+## Introduction to Bayesian Linear Regression
+
+-   Regression under the *frequentist* framework
+    -   Independent variables are used to predict dependent variables
+    -   Linear regression finds best-fitting line to observed data to
+        make further predictions
+        -   Regression parameters ($\beta$) are assumed to be fixed
+    -   Only collected data is used for approximation
+-   Regression under the *Bayesian* framework
+    -   Independent variables are used to predict dependent variables
+    -   Regression parameters ($\beta$) *are not* assumed to be fixed
+    -   Collected data is used alongside prior knowledge for
+        approximation
+
+## Why Bayesian?
+
+**Advantages of Bayesian Linear Regression[@Zyphur2015]**
+
+-   **Incorporation of Prior Knowledge**
+
+-   **Uncertainty Quantification**
+
+-   **Expanded Hypotheses**
+
+-   **Automatic Meta-Analyses**
+
+-   **Improved Handling of Small Samples**
+
+-   **Complex Model Estimation**
+
+## Steps in Bayesian Linear Regression
+
+1.  Model Specification: Define the linear relationship between the
+    dependent and independent variables.
+
+2.  Choose Priors: Select prior distributions for the model parameters,
+    reflecting any existing knowledge about their values.
+
+3.  Data Collection: Gather relevant data for the variables in the
+    model.
+
+4.  Model Fitting: Use computational methods, such as Markov Chain Monte
+    Carlo (MCMC), to estimate the posterior distributions of the
+    parameters based on the observed data.
+
+5.  Result Interpretation: Analyze the posterior distributions to
+    understand the relationships between variables, including estimating
+    means and credible intervals.
+
+# **Methods**
+
+## Heather's Prior Selection & Model Specification
+
+**Prior Selection**
+
+-   Intercept $(\beta_0)$: $\beta_0 \sim N(0, 5^2)$ Assumes no strong
+    baseline effect.
+
+-   Slope $(\beta_1)$: $\beta_1 \sim N(0, 5^2)$ Reflects no strong prior
+    belief about the relationship between weather incidents and delays.
+
+-   Error Term $(\sigma)$: $\sigma \sim \text{Exp}(1)$ Accounts for
+    variability in delays; allows flexibility.
+
+**Model Specification**
+
+$Y_i \mid \beta_0, \beta_1, \sigma \sim N(\mu_i, \sigma^2)$
+$\mu_i = \beta_0 + \beta_1 X_i$
+
+-   $Y_i$: Arrival delay (minutes)\
+-   $X_i$: Weather-related incidents
+
+# **Analysis & Results**
+
+## Meet My Dataset!
+
+![](Screenshot%202024-11-16%20111241.png)
+
+## Exploring the Data
+
+![](Screenshot%202024-11-16%20112442.png)
+
+## Exploring the Data
+
+![](Screenshot%202024-11-16%20112627.png)
+
+## Choosing Focus
+
+![](Screenshot%202024-11-14%20121808.png)
+
+## Table 1: Summary of Flight Arrivals, Delays, Cancellations, and Diversions
+
+![](Screenshot%202024-11-14%20154111.png)
+
+## Code for Model
+
+![](Screenshot%202024-11-14%20121520.png)
+
+## Trace Plots and Posterior Distributions
+
+![](Screenshot%202024-11-14%20125342.png)
+
+## Model Parameters and Estimates
+
+| **Parameter** | **Estimate** | **Standard Error** | **95% Credible Interval** |
+|-----------------|-----------------|-----------------|---------------------|
+| Intercept     | -2116.53     | 7.67               | \[-2131.41, -2100.91\]    |
+| Weather Count | 1041.97      | 2.66               | \[1036.73, 1047.15\]      |
+| Sigma         | 8676.19      | 15.52              | \[8646.95, 8706.92\]      |
+
+## Model Diagnostics and Fit Statistics
+
+![](Screenshot%202024-11-16%20113401.png)
+
+## Posterior Distribution for Weather Count Coefficient
+
+![](Screenshot%202024-11-16%20234515.png)
+
+## **Posterior Predictive Check**
+
+![](Screenshot%202024-11-17%20002825.png)
+
+# **Conclusion**
+
+## Key Findings
+
+-   **Intercept**: -2116.53 (95% CI: \[-2131.41, -2100.91\])
+
+    -   Indicates significantly shorter delays without weather
+        incidents.
+
+-   **Weather Count Coefficient**: 1041.97 (95% CI: \[1036.73,
+    1047.15\])
+
+    -   A **1-unit increase in weather incidents** leads to an average
+        **1042-minute delay**.
+
+    -   Weather incidents are **infrequent but highly disruptive**.
+
+-   **Uncertainty Measures**:
+
+    -   Residual variability: **Standard deviation = 8676.19**.
+
+    -   Suggests other unmeasured factors affecting delays.
+
+-   **Model Diagnostics**:
+
+    -   **Rhat = 1.00** for all parameters, indicating convergence.
+
+    -   Large **effective sample sizes** ensure reliable posterior
+        estimates.
+
+## Conclusion
+
+-   **Key Insight**:
+
+    -   Weather-related incidents, though infrequent, have a
+        **disproportionately large impact** on delay times.
+
+    -   Highlights the need for better **weather management and
+        forecasting**.
+
+-   **Bayesian Approach**:
+
+    -   Accounts for **uncertainty**, providing credible intervals for
+        estimates.
+
+    -   Supports **informed decision-making** in airline operations and
+        policy-making.
+
+## Discussion and Future Research
+
+-   What other factors could be included in the model?
+
+-   How could expanding the dataset improve insights?
+
+-   What advanced Bayesian methods could be explored?
+
+-   How should outliers be addressed?
+
+-   What assumptions should be revisited?
+
+    ![](outliermeme.jpg)
+
+## Thank You! Questions?
+
+![](bayesianmeme.jpg)
+
+# **References**
