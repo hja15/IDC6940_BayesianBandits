@@ -245,6 +245,8 @@ $95\% \text{ CI} = [194.08, 197.46]$
 
 ## Hypotheses
 
+<div style="font-size: 0.7em;">
+
 Chinstraps: 215 and 225 mm
 
 -   Null Hypothesis $H_0$:
@@ -254,6 +256,8 @@ Chinstraps: 215 and 225 mm
 -   Alternative Hypothesis $H_1$:
 
     -   $H_1: \mu \notin (215,225)$
+
+</div>
 
 ![](penguins4.png){fig-align="center"}
 
