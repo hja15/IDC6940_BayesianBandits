@@ -55,10 +55,9 @@ chindata <- penguins %>%
     South Sandwich Islands. According to the study, the penguins take
     more than 10,000 naps a day, with each one lasting only four
     seconds, totaling 11-12 hours per day.
-
-![](penguin5.png){fig-align="center"}
-
 -   Today we will analyze flipper lengths for Chinstrap penguins.
+
+![Image Source: Gemini AI](penguin5.png){fig-align="center"}
 
 <!-- Slide 2-->
 
@@ -83,7 +82,8 @@ $$
     Chinstrap penguins is 193.37mm with a standard deviation of 6.12
     [@Moreno1999]
 
-![](Chinstrap_Penguin_1.jpg){fig-align="center"}
+![Image Source:
+wikipedia.org](Chinstrap_Penguin_1.jpg){fig-align="center"}
 
 <!-- Slide 4-->
 
@@ -221,7 +221,8 @@ qnorm(c(0.025, 0.975), 195.77, 0.86)
 
 $95\% \text{ CI} = [194.08, 197.46]$
 
-![](Chinstrap_Penguin_3.jpg){fig-align="center"}
+![Image Source:
+commons.wikimedia.org](Chinstrap_Penguin_3.jpg){fig-align="center"}
 
 ```{r}
 # Compute the 95% credible interval
@@ -245,8 +246,7 @@ $95\% \text{ CI} = [194.08, 197.46]$
 
 ## Hypotheses
 
-<div style="font-size: 0.7em;">
-
+::: {style="font-size: 0.7em;"}
 Chinstraps: 215 and 225 mm
 
 -   Null Hypothesis $H_0$:
@@ -256,10 +256,9 @@ Chinstraps: 215 and 225 mm
 -   Alternative Hypothesis $H_1$:
 
     -   $H_1: \mu \notin (215,225)$
+:::
 
-</div>
-
-![](penguins4.png){fig-align="center"}
+![Image Source: Gemini AI](penguins4.png){fig-align="center"}
 
 <!-- Slide 9-->
 
@@ -271,7 +270,8 @@ Chinstraps: 215 and 225 mm
     supports values below 215mm, resulting in no evidence for the null
     hypothesis.
 
-![](Chinstrap_Penguin_2.jpg){fig-align="center"}
+![Image Source:
+crittersquad.com](Chinstrap_Penguin_2.jpg){fig-align="center"}
 
 <!-- Slide 10-->
 
@@ -288,7 +288,8 @@ $P(215\le\mu\le225|Y=68)=0$
 
 This confirms the conclusion drawn previously.
 
-![](penguin6.jpg){fig-align="center" width="400"}
+![Image Source: redbubble.com](penguin6.jpg){fig-align="center"
+width="400"}
 
 <!-- Slide 11-->
 
@@ -325,6 +326,6 @@ $\text{Bayes Factor}= \frac{\text{Posterior Odds}}{\text{Prior Odds}}= \frac{0}{
     flipper length for Chinstrap penguins is 193.37 with a standard
     deviation of 6.12. We noted no extra large penguins in our sample.
 
-![](dontjudgemepenguin.png){fig-align="center"}
+![Image Source: Gemini AI](dontjudgemepenguin.png){fig-align="center"}
 
 ## References
