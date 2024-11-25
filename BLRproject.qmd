@@ -20,6 +20,9 @@ editor:
 theme: united
 ---
 
+Slides: [View
+Slides](https://sep30s.github.io/BayesianBandits/slides.html){target="_blank"}
+
 # **Introduction**
 
 Bayesian linear regression (BLR) is a statistical approach that uses
@@ -857,7 +860,7 @@ cat("95% Credible Interval for Mean Arrival Delay:", credible_interval, "\n")
 ## **Table 3: Model Parameters and Estimates**
 
 | **Parameter** | **Estimate** | **Standard Error** | **95% Credible Interval** |
-|-----------------|-----------------|-----------------|----------------------|
+|----------------|----------------|-----------------|-----------------------|
 | Intercept     | -2116.53     | 7.67               | \[-2131.41, -2100.91\]    |
 | Weather Count | 1041.97      | 2.66               | \[1036.73, 1047.15\]      |
 | Sigma         | 8676.19      | 15.52              | \[8646.95, 8706.92\]      |
@@ -865,7 +868,7 @@ cat("95% Credible Interval for Mean Arrival Delay:", credible_interval, "\n")
 ## **Table 4: Model Diagnostics and Fit Statistics**
 
 | **Statistic**                                                 | **Value**                |
-|-------------------------------------------------|-----------------------|
+|--------------------------------------------------|----------------------|
 | **Number of Observations**                                    | 171,426                  |
 | **Model Family**                                              | Gaussian                 |
 | **Formula**                                                   | `arr_delay ~ weather_ct` |
@@ -961,6 +964,8 @@ ggplot(data.frame(weather_posterior), aes(x = weather_posterior)) +
 
 ```
 
+Summary
+
 ```{r, results = 'hide'}
 # Load necessary libraries
 library(dplyr)
@@ -1023,8 +1028,8 @@ well-sampled.
 
 ## **Interpretation**
 
-The model suggests a robust and statistically significant relationship
-between weather-related incidents and arrival delays. Despite being less
+The model suggests a statistically significant relationship between
+weather-related incidents and arrival delays. Despite being less
 frequent compared to other causes, weather incidents lead to much larger
 disruptions when they occur. This highlights how important weather is
 when it comes to managing airline schedules and reducing arrival delays.
